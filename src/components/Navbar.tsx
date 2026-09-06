@@ -10,7 +10,6 @@ import {
   Plus,
   X,
   Search,
-  Clapperboard,
   LogOut,
   ChevronDown
 } from 'lucide-react';
@@ -51,21 +50,24 @@ export const Navbar = () => {
     showToast('Signed out successfully.', 'info');
   };
 
+  // Hide the global navbar on the home page – it has its own in-hero nav
+  if (pathname === '/') return null;
+
   return (
     <>
       <header className="sticky top-0 z-40 bg-[#0c0a18]/90 backdrop-blur-md border-b border-[#221c3d]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          {/* Logo & Brand (Styled like the "ICONIC" Neon Sign) */}
+          {/* Logo & Brand */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-pink-600 via-fuchsia-600 to-cyan-400 p-[1px] shadow-[0_0_12px_rgba(255,42,141,0.6)]">
-                <div className="w-full h-full bg-[#0d0b1a] rounded-[7px] flex items-center justify-center">
-                  <Clapperboard className="w-4 h-4 text-pink-400 group-hover:text-cyan-400 transition-colors" />
-                </div>
-              </div>
+              <img
+                src="/logo.jpg"
+                alt="DramaBox"
+                className="w-8 h-8 rounded-lg object-cover shadow-[0_0_14px_rgba(168,85,247,0.7)]"
+              />
               <span className="font-extrabold text-lg tracking-wider text-white uppercase flex items-center">
                 DRAMA
-                <span className="neon-sign-pink font-black ml-1 tracking-widest text-pink-400">
+                <span className="font-black ml-1 tracking-widest" style={{ color: '#a855f7', textShadow: '0 0 14px #a855f7' }}>
                   BOX
                 </span>
               </span>
