@@ -296,6 +296,12 @@ function CreatorDashboardContent() {
             >
               <ShieldCheck className="w-3.5 h-3.5 text-pink-200" /> QA Verification Lab
             </button>
+            <button
+              onClick={() => showToast('Go Live feature coming soon!', 'info')}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-xl bg-gradient-to-r from-violet-700 via-purple-600 to-rose-500 text-white shadow-[0_0_16px_rgba(139,92,246,0.55)] hover:shadow-[0_0_28px_rgba(244,63,94,0.65)] hover:scale-105 transition-all"
+            >
+              <Zap className="w-3.5 h-3.5 text-rose-200" /> Go Live
+            </button>
           </div>
         </div>
 

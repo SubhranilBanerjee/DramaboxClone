@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* ── Legacy neon vars (kept for backward compat) ────────────────────────── */
 :root {
   --neon-bg: #07060e;
   --neon-card: #0f0e1c;
@@ -12,17 +13,92 @@
   --neon-cyan-glow: rgba(0, 240, 255, 0.6);
   --neon-purple: #b026ff;
   --neon-purple-glow: rgba(176, 38, 255, 0.6);
+
+  /* ── Semantic theme tokens (default = dark) ──────────────────────────── */
+  --bg:             #07060e;
+  --bg-surface:     #0f0e1c;
+  --bg-elevated:    #151329;
+  --border:         #231e3d;
+  --border-hover:   #ff2a8d;
+  --text-primary:   #f1f5f9;
+  --text-muted:     #94a3b8;
+  --text-subtle:    #64748b;
+  --accent:         #ff2a8d;
+  --accent2:        #00f0ff;
+  --accent3:        #b026ff;
+  --accent-glow:    rgba(255,42,141,0.55);
+  --orb-color:      #ff2a8d;
+  --orb-glow:       rgba(255,42,141,0.8);
+  --scrollbar-thumb:#231e3d;
+}
+
+/* ── Light theme ─────────────────────────────────────────────────────────── */
+:root[data-theme="light"] {
+  --bg:             #f0eeff;
+  --bg-surface:     #ffffff;
+  --bg-elevated:    #faf9ff;
+  --border:         #ddd8f5;
+  --border-hover:   #7c3aed;
+  --text-primary:   #1a1040;
+  --text-muted:     #6b7280;
+  --text-subtle:    #9ca3af;
+  --accent:         #7c3aed;
+  --accent2:        #db2777;
+  --accent3:        #f59e0b;
+  --accent-glow:    rgba(124,58,237,0.4);
+  --orb-color:      #f59e0b;
+  --orb-glow:       rgba(245,158,11,0.8);
+  --scrollbar-thumb:#c4b5fd;
+}
+
+/* ── Violet theme ────────────────────────────────────────────────────────── */
+:root[data-theme="violet"] {
+  --bg:             #120a2e;
+  --bg-surface:     #1a1040;
+  --bg-elevated:    #231454;
+  --border:         #3a1f6e;
+  --border-hover:   #8b5cf6;
+  --text-primary:   #ede9fe;
+  --text-muted:     #a78bfa;
+  --text-subtle:    #7c3aed;
+  --accent:         #8b5cf6;
+  --accent2:        #c084fc;
+  --accent3:        #e879f9;
+  --accent-glow:    rgba(139,92,246,0.6);
+  --orb-color:      #c084fc;
+  --orb-glow:       rgba(192,132,252,0.9);
+  --scrollbar-thumb:#3a1f6e;
+}
+
+/* ── Neon / Cyberpunk theme ──────────────────────────────────────────────── */
+:root[data-theme="neon"] {
+  --bg:             #04030d;
+  --bg-surface:     #080614;
+  --bg-elevated:    #0c0920;
+  --border:         #1a0a3e;
+  --border-hover:   #00f0ff;
+  --text-primary:   #f0f0ff;
+  --text-muted:     #7c3aed;
+  --text-subtle:    #4c1d95;
+  --accent:         #00f0ff;
+  --accent2:        #ff2a8d;
+  --accent3:        #39ff14;
+  --accent-glow:    rgba(0,240,255,0.65);
+  --orb-color:      #00f0ff;
+  --orb-glow:       rgba(0,240,255,1);
+  --scrollbar-thumb:#1a0a3e;
 }
 
 body {
-  background-color: #07060e;
-  color: #f1f5f9;
+  background-color: var(--bg, #07060e);
+  color: var(--text-primary, #f1f5f9);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
+  transition: background-color 0.5s ease, color 0.4s ease;
 }
 
 /* Ambient Room Glow (Inspired by overhead ICONIC magenta light & cyan monitor backlighting) */
@@ -135,9 +211,10 @@ body::after {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #231e3d;
+  background: var(--scrollbar-thumb, #231e3d);
   border-radius: 9999px;
   border: 1px solid rgba(255, 42, 141, 0.2);
+  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
