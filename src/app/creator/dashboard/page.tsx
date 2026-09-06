@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { Suspense, useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import {
   Video,
   Clapperboard,
@@ -47,8 +47,7 @@ import {
 } from '@/lib/creatorStore';
 import { Episode, CreatorDrama, VideoVerificationStatus, VideoVerificationReport } from '@/lib/types';
 
-export default function CreatorDashboardPage() {
-  const router = useRouter();
+function CreatorDashboardContent() {
   const searchParams = useSearchParams();
   const { user, signIn } = useAuth();
   const { showToast } = useToast();
@@ -121,7 +120,7 @@ export default function CreatorDashboardPage() {
   const togglePlay = () => {
     if (!videoRef.current) return;
     if (videoRef.current.paused) {
-      videoRef.current.play().catch(() => {});
+      videoRef.current.play().catch(() => { });
       setIsPlaying(true);
     } else {
       videoRef.current.pause();
@@ -138,7 +137,7 @@ export default function CreatorDashboardPage() {
   const handleRestartVideo = () => {
     if (!videoRef.current) return;
     videoRef.current.currentTime = 0;
-    videoRef.current.play().catch(() => {});
+    videoRef.current.play().catch(() => { });
     setIsPlaying(true);
   };
 
@@ -315,20 +314,18 @@ export default function CreatorDashboardPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                className={`py-3 font-bold flex items-center gap-2 border-b-2 transition-all whitespace-nowrap ${
-                  isActive
-                    ? 'border-pink-500 text-pink-400 neon-text-pink drop-shadow-[0_0_8px_rgba(255,42,141,0.7)]'
-                    : 'border-transparent text-slate-400 hover:text-slate-200'
-                }`}
+                className={`py-3 font-bold flex items-center gap-2 border-b-2 transition-all whitespace-nowrap ${isActive
+                  ? 'border-pink-500 text-pink-400 neon-text-pink drop-shadow-[0_0_8px_rgba(255,42,141,0.7)]'
+                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  }`}
               >
                 <Icon className="w-3.5 h-3.5" />
                 <span>{tab.label}</span>
                 {tab.badge && (
-                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                    tab.id === 'verification' && pendingCount > 0
-                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse'
-                      : 'bg-[#231b45] text-slate-300'
-                  }`}>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${tab.id === 'verification' && pendingCount > 0
+                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse'
+                    : 'bg-[#231b45] text-slate-300'
+                    }`}>
                     {tab.badge}
                   </span>
                 )}
@@ -643,9 +640,8 @@ export default function CreatorDashboardPage() {
                     {/* Play / Pause Big Center Overlay */}
                     <button
                       onClick={togglePlay}
-                      className={`absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity ${
-                        isPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
-                      }`}
+                      className={`absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity ${isPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
+                        }`}
                     >
                       <div className="w-14 h-14 rounded-full bg-pink-600/80 backdrop-blur-md text-white flex items-center justify-center shadow-[0_0_20px_rgba(255,42,141,0.8)]">
                         {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 fill-white ml-0.5" />}
@@ -689,11 +685,10 @@ export default function CreatorDashboardPage() {
 
                     <button
                       onClick={() => setShowSafeZone(!showSafeZone)}
-                      className={`px-2 py-1 rounded text-[10px] font-bold transition-all ${
-                        showSafeZone
-                          ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
-                          : 'bg-[#1a1433] text-slate-400'
-                      }`}
+                      className={`px-2 py-1 rounded text-[10px] font-bold transition-all ${showSafeZone
+                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                        : 'bg-[#1a1433] text-slate-400'
+                        }`}
                     >
                       Safe Zone Guide
                     </button>
@@ -985,11 +980,10 @@ export default function CreatorDashboardPage() {
                           setUploadVideoUrl(sample.url);
                           setCustomFileSelected(null);
                         }}
-                        className={`text-left p-2 rounded-xl text-xs border transition-all ${
-                          uploadVideoUrl === sample.url && !customFileSelected
-                            ? 'bg-[#1f1742] border-pink-500 text-pink-300 shadow-[0_0_10px_rgba(255,42,141,0.3)]'
-                            : 'bg-[#120f24] border-[#251d45] text-slate-300 hover:border-slate-500'
-                        }`}
+                        className={`text-left p-2 rounded-xl text-xs border transition-all ${uploadVideoUrl === sample.url && !customFileSelected
+                          ? 'bg-[#1f1742] border-pink-500 text-pink-300 shadow-[0_0_10px_rgba(255,42,141,0.3)]'
+                          : 'bg-[#120f24] border-[#251d45] text-slate-300 hover:border-slate-500'
+                          }`}
                       >
                         <div className="font-bold truncate">{sample.label}</div>
                         <div className="text-[10px] text-slate-500 mt-0.5">{sample.tags}</div>
@@ -1150,11 +1144,10 @@ export default function CreatorDashboardPage() {
                         key={idx}
                         type="button"
                         onClick={() => setNewSeriesCover(poster)}
-                        className={`aspect-[3/4] rounded-lg overflow-hidden border-2 transition-all relative ${
-                          newSeriesCover === poster
-                            ? 'border-pink-500 scale-105 shadow-[0_0_12px_rgba(255,42,141,0.5)]'
-                            : 'border-transparent opacity-60 hover:opacity-100'
-                        }`}
+                        className={`aspect-[3/4] rounded-lg overflow-hidden border-2 transition-all relative ${newSeriesCover === poster
+                          ? 'border-pink-500 scale-105 shadow-[0_0_12px_rgba(255,42,141,0.5)]'
+                          : 'border-transparent opacity-60 hover:opacity-100'
+                          }`}
                       >
                         <img src={poster} alt="Poster preset" className="w-full h-full object-cover" />
                       </button>
@@ -1310,5 +1303,21 @@ export default function CreatorDashboardPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function CreatorDashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#07060e] text-slate-100 flex items-center justify-center">
+          <div className="text-sm text-slate-400">
+            Loading Creator Studio...
+          </div>
+        </div>
+      }
+    >
+      <CreatorDashboardContent />
+    </Suspense>
   );
 }
