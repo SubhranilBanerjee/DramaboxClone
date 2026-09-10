@@ -6,16 +6,20 @@ import {
   CreatorDrama,
   VideoVerificationStatus,
   VideoVerificationReport,
-  VideoQAItem
+  VideoQAItem,
+  EpisodeAnalytics,
+  CreatorMonetization
 } from './types';
 
 const STORAGE_KEYS = {
   CREATOR_DRAMAS: 'dramabox_creator_dramas',
   CREATOR_EPISODES: 'dramabox_creator_episodes',
   VERIFICATION_REPORTS: 'dramabox_video_verification_reports',
+  EPISODE_ANALYTICS: 'dramabox_episode_analytics',
+  CREATOR_MONETIZATION: 'dramabox_creator_monetization',
 };
 
-// Event bus to keep creator UI synchronized in real-time
+// Event bus to keep creator UI and admin UI synchronized in real-time
 const eventTarget = typeof window !== 'undefined' ? new EventTarget() : null;
 
 function emitChange(event: string) {
@@ -24,7 +28,7 @@ function emitChange(event: string) {
   }
 }
 
-// Default high quality starter series for new Creator accounts
+// Initial high-quality dramas: one approved, one pending review
 const INITIAL_CREATOR_DRAMAS: CreatorDrama[] = [
   {
     id: 'creator-series-neon-rebel',
@@ -40,7 +44,7 @@ const INITIAL_CREATOR_DRAMAS: CreatorDrama[] = [
     creator_name: 'Neon Rebel Studios',
     status: 'verified',
     created_at: '2026-03-01T10:00:00Z',
-    episodes_count: 4,
+    episodes_count: 2,
   },
   {
     id: 'creator-series-shadow-love',
@@ -54,7 +58,7 @@ const INITIAL_CREATOR_DRAMAS: CreatorDrama[] = [
     rating: 9.6,
     creator_id: 'demo_creator_id',
     creator_name: 'Neon Rebel Studios',
-    status: 'pending_verification',
+    status: 'pending_approval',
     created_at: '2026-03-04T14:30:00Z',
     episodes_count: 2,
   },
@@ -76,6 +80,8 @@ export const INITIAL_CREATOR_EPISODES: Episode[] = [
     verification_notes: 'All quality and aspect ratio checks passed with 100% compliance.',
     verified_at: '2026-03-02T12:00:00Z',
     created_at: '2026-03-02T10:00:00Z',
+    views: 1420500,
+    likes: 89400,
   },
   {
     id: 'creator-series-neon-rebel-ep-2',
@@ -93,6 +99,8 @@ export const INITIAL_CREATOR_EPISODES: Episode[] = [
     verification_notes: 'Sound levels aligned to -14.2 LUFS. Verified.',
     verified_at: '2026-03-02T13:00:00Z',
     created_at: '2026-03-02T11:00:00Z',
+    views: 980200,
+    likes: 64100,
   },
   {
     id: 'creator-series-shadow-love-ep-1',
@@ -102,12 +110,14 @@ export const INITIAL_CREATOR_EPISODES: Episode[] = [
     video_url: 'https://assets.mixkit.co/videos/preview/mixkit-close-up-of-a-womans-face-with-dramatic-lighting-42288-large.mp4',
     is_premium: false,
     duration: '01:52',
-    verification_status: 'pending_verification',
+    verification_status: 'pending_approval',
     aspect_ratio: '9:16 Vertical',
     resolution: '1080x1920 Full HD',
     file_size: '48.9 MB',
-    verification_notes: 'Pending final author approval and QA review.',
+    verification_notes: 'Uploaded to Cloudinary CDN. Waiting for Admin verification and approval.',
     created_at: '2026-03-04T15:00:00Z',
+    views: 64000,
+    likes: 3100,
   },
   {
     id: 'creator-series-shadow-love-ep-2',
@@ -118,16 +128,17 @@ export const INITIAL_CREATOR_EPISODES: Episode[] = [
     is_premium: true,
     coin_price: 20,
     duration: '01:41',
-    verification_status: 'draft',
+    verification_status: 'pending_approval',
     aspect_ratio: '9:16 Vertical',
     resolution: '1080x1920 Full HD',
     file_size: '39.8 MB',
-    verification_notes: 'Draft upload. Awaiting video verification scan.',
+    verification_notes: 'Uploaded to Cloudinary CDN. Waiting for Admin review.',
     created_at: '2026-03-04T16:00:00Z',
+    views: 42000,
+    likes: 1950,
   },
 ];
 
-// Sample vertical video presets creators can choose for rapid testing
 export const SAMPLE_CREATOR_VERTICAL_VIDEOS = [
   {
     label: 'Cyberpunk Neon Model (Vertical 9:16)',
@@ -155,7 +166,6 @@ export const SAMPLE_CREATOR_VERTICAL_VIDEOS = [
   },
 ];
 
-// Sample posters creators can choose for quick visual creation
 export const SAMPLE_CREATOR_POSTERS = [
   'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
   'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
@@ -232,7 +242,7 @@ export function createCreatorDrama(data: {
     rating: 9.9,
     creator_id: data.creator_id || 'creator_user',
     creator_name: data.creator_name || 'DramaBox Verified Studio',
-    status: 'draft',
+    status: 'pending_approval', // Goes directly to admin dashboard
     created_at: new Date().toISOString(),
     episodes_count: 0,
   };
@@ -263,26 +273,109 @@ export function uploadCreatorEpisode(data: {
     is_premium: data.is_premium,
     coin_price: data.is_premium ? (data.coin_price || 20) : 0,
     duration: data.duration || '01:40',
-    verification_status: 'pending_verification',
+    verification_status: 'pending_approval', // Sent to Admin Dashboard queue
     aspect_ratio: '9:16 Vertical',
     resolution: data.resolution || '1080x1920 Full HD',
     file_size: data.file_size || '45.0 MB',
-    verification_notes: 'Uploaded. Awaiting verification run.',
+    verification_notes: 'Uploaded via Cloudinary CDN pipeline. Awaiting Admin Approval.',
     created_at: new Date().toISOString(),
+    views: 0,
+    likes: 0,
   };
 
   episodes.unshift(newEpisode);
   saveCreatorEpisodes(episodes);
 
-  // Increment episodes count on parent drama
+  // Increment episodes count on parent drama and ensure it enters pending_approval if draft
   const dramas = getCreatorDramas();
   const drama = dramas.find((d) => d.id === data.drama_id);
   if (drama) {
     drama.episodes_count = (drama.episodes_count || 0) + 1;
+    if (drama.status === 'draft') {
+      drama.status = 'pending_approval';
+    }
     saveCreatorDramas(dramas);
   }
 
   return newEpisode;
+}
+
+// ----------------- ADMIN APPROVAL / REJECTION ACTIONS -----------------
+
+export function approveDrama(dramaId: string): boolean {
+  const dramas = getCreatorDramas();
+  const drama = dramas.find((d) => d.id === dramaId);
+  if (!drama) return false;
+
+  drama.status = 'verified';
+  drama.rejection_reason = undefined;
+  saveCreatorDramas(dramas);
+
+  // Also approve all pending episodes belonging to this drama
+  const episodes = getCreatorEpisodes();
+  episodes.forEach((ep) => {
+    if (ep.drama_id === dramaId && ep.verification_status !== 'rejected') {
+      ep.verification_status = 'verified';
+      ep.verified_at = new Date().toISOString();
+      ep.verification_notes = 'Approved by Administrator. Live on DramaBox.';
+    }
+  });
+  saveCreatorEpisodes(episodes);
+  return true;
+}
+
+export function rejectDrama(dramaId: string, reason: string): boolean {
+  const dramas = getCreatorDramas();
+  const drama = dramas.find((d) => d.id === dramaId);
+  if (!drama) return false;
+
+  drama.status = 'rejected';
+  drama.rejection_reason = reason;
+  saveCreatorDramas(dramas);
+
+  const episodes = getCreatorEpisodes();
+  episodes.forEach((ep) => {
+    if (ep.drama_id === dramaId) {
+      ep.verification_status = 'rejected';
+      ep.rejection_reason = reason;
+      ep.verification_notes = `Rejected by Administrator: ${reason}`;
+    }
+  });
+  saveCreatorEpisodes(episodes);
+  return true;
+}
+
+export function approveEpisode(episodeId: string): boolean {
+  const episodes = getCreatorEpisodes();
+  const ep = episodes.find((e) => e.id === episodeId);
+  if (!ep) return false;
+
+  ep.verification_status = 'verified';
+  ep.verified_at = new Date().toISOString();
+  ep.verification_notes = 'Verified & Approved by Admin for public streaming.';
+  ep.rejection_reason = undefined;
+  saveCreatorEpisodes(episodes);
+
+  // If parent drama is pending, check if it should become verified
+  const dramas = getCreatorDramas();
+  const parent = dramas.find((d) => d.id === ep.drama_id);
+  if (parent && parent.status !== 'verified') {
+    parent.status = 'verified';
+    saveCreatorDramas(dramas);
+  }
+  return true;
+}
+
+export function rejectEpisode(episodeId: string, reason: string): boolean {
+  const episodes = getCreatorEpisodes();
+  const ep = episodes.find((e) => e.id === episodeId);
+  if (!ep) return false;
+
+  ep.verification_status = 'rejected';
+  ep.rejection_reason = reason;
+  ep.verification_notes = `Admin feedback: ${reason}`;
+  saveCreatorEpisodes(episodes);
+  return true;
 }
 
 export function updateEpisodeVerificationStatus(
@@ -302,7 +395,6 @@ export function updateEpisodeVerificationStatus(
     }
     saveCreatorEpisodes(episodes);
 
-    // If this episode belongs to a draft drama, check if all episodes or at least one is verified
     const dramas = getCreatorDramas();
     const parentDrama = dramas.find((d) => d.id === ep.drama_id);
     if (parentDrama && status === 'verified' && parentDrama.status !== 'verified') {
@@ -335,16 +427,118 @@ export function deleteCreatorDrama(dramaId: string) {
   saveCreatorEpisodes(episodes);
 }
 
-// ----------------- AUTOMATED QA COMPLIANCE ENGINE -----------------
+// ----------------- PER-VIDEO ANALYTICS -----------------
+
+export function getEpisodeAnalyticsList(): EpisodeAnalytics[] {
+  const episodes = getCreatorEpisodes();
+  return episodes.map((ep, idx) => {
+    const baseViews = ep.views || (ep.verification_status === 'verified' ? 450000 / (ep.episode_number || 1) : 0);
+    const views = Math.round(baseViews);
+    const completionRate = ep.verification_status === 'verified' ? Math.max(45, Math.min(94, 88 - (ep.episode_number * 3))) : 0;
+    const likes = ep.likes || Math.round(views * 0.065);
+    const coinsEarned = ep.is_premium ? Math.round(views * 0.12 * (ep.coin_price || 20)) : 0;
+    const usdEarned = Number((coinsEarned * 0.007).toFixed(2));
+
+    return {
+      episode_id: ep.id,
+      title: ep.title,
+      episode_number: ep.episode_number,
+      views,
+      completion_rate: completionRate,
+      likes,
+      coins_earned: coinsEarned,
+      usd_earned: usdEarned,
+    };
+  });
+}
+
+// ----------------- CREATOR MONETIZATION & PAYOUTS -----------------
+
+const DEFAULT_MONETIZATION: CreatorMonetization = {
+  available_balance_usd: 1240.50,
+  pending_payout_usd: 480.00,
+  total_lifetime_usd: 6850.00,
+  total_coins_earned: 978000,
+  payout_method: 'paypal',
+  payout_account: 'payments@neonrebelstudios.com',
+  payout_history: [
+    {
+      id: 'payout-2026-02-28',
+      amount_usd: 1500.00,
+      date: '2026-02-28',
+      status: 'completed',
+      method: 'PayPal (payments@neonrebelstudios.com)',
+    },
+    {
+      id: 'payout-2026-01-31',
+      amount_usd: 2100.00,
+      date: '2026-01-31',
+      status: 'completed',
+      method: 'Bank Wire (ACH ****4892)',
+    },
+    {
+      id: 'payout-2025-12-31',
+      amount_usd: 1530.00,
+      date: '2025-12-31',
+      status: 'completed',
+      method: 'PayPal (payments@neonrebelstudios.com)',
+    },
+  ],
+};
+
+export function getCreatorMonetization(): CreatorMonetization {
+  if (typeof window === 'undefined') return DEFAULT_MONETIZATION;
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.CREATOR_MONETIZATION);
+    if (!data) {
+      localStorage.setItem(STORAGE_KEYS.CREATOR_MONETIZATION, JSON.stringify(DEFAULT_MONETIZATION));
+      return DEFAULT_MONETIZATION;
+    }
+    return JSON.parse(data);
+  } catch {
+    return DEFAULT_MONETIZATION;
+  }
+}
+
+export function requestCreatorPayout(
+  amount: number,
+  method: 'paypal' | 'bank_transfer' | 'stripe',
+  account: string
+): { success: boolean; message: string } {
+  const current = getCreatorMonetization();
+  if (amount <= 0 || amount > current.available_balance_usd) {
+    return { success: false, message: `Invalid payout amount. Maximum available: $${current.available_balance_usd.toFixed(2)}` };
+  }
+
+  current.available_balance_usd -= amount;
+  current.pending_payout_usd += amount;
+  current.payout_method = method;
+  current.payout_account = account;
+  current.payout_history.unshift({
+    id: `payout-${Date.now()}`,
+    amount_usd: amount,
+    date: new Date().toISOString().split('T')[0],
+    status: 'processing',
+    method: `${method === 'paypal' ? 'PayPal' : method === 'stripe' ? 'Stripe Connect' : 'Direct Bank'} (${account})`,
+  });
+
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEYS.CREATOR_MONETIZATION, JSON.stringify(current));
+  }
+  emitChange('creator_monetization_changed');
+  return { success: true, message: `Payout request for $${amount.toFixed(2)} submitted successfully!` };
+}
+
+// ----------------- AUTOMATED QA SCAN ENGINE -----------------
 
 export function runAutomatedVideoQAScan(episode: Episode): Promise<VideoVerificationReport> {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const isMixkitOrMp4 = episode.video_url.includes('.mp4') || episode.video_url.startsWith('blob:') || episode.video_url.startsWith('data:');
+      const isMixkitOrMp4 = episode.video_url.includes('.mp4') || episode.video_url.includes('cloudinary') || episode.video_url.startsWith('blob:') || episode.video_url.startsWith('data:');
       
       const report: VideoVerificationReport = {
         episode_id: episode.id,
-        status: 'verified',
+        status: 'pending_approval',
         aspect_ratio_ok: true,
         audio_loudness_ok: true,
         codec_supported: isMixkitOrMp4,
@@ -352,10 +546,10 @@ export function runAutomatedVideoQAScan(episode: Episode): Promise<VideoVerifica
         resolution: episode.resolution || '1080x1920 (9:16 Portrait)',
         scanned_at: new Date().toISOString(),
         notes: [
+          'Cloudinary CDN integration verified.',
           'Aspect ratio complies with 9:16 portrait mobile standards.',
           'Audio loudness normalized to -14.2 LUFS (Platform standard).',
-          'H.264 / AAC hardware acceleration supported.',
-          'DRM digital watermark metadata embedded successfully.',
+          'Video submitted to Admin Review Queue for public publishing.',
         ],
       };
 
@@ -364,7 +558,6 @@ export function runAutomatedVideoQAScan(episode: Episode): Promise<VideoVerifica
   });
 }
 
-// Standard verification checklist items for creators
 export const STANDARD_CREATOR_QA_CHECKLIST: VideoQAItem[] = [
   {
     id: 'aspect_ratio',
@@ -401,25 +594,35 @@ export const STANDARD_CREATOR_QA_CHECKLIST: VideoQAItem[] = [
 export function useCreatorStore() {
   const [dramas, setDramas] = useState<CreatorDrama[]>([]);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [analytics, setAnalytics] = useState<EpisodeAnalytics[]>([]);
+  const [monetization, setMonetization] = useState<CreatorMonetization>(DEFAULT_MONETIZATION);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setDramas(getCreatorDramas());
     setEpisodes(getCreatorEpisodes());
+    setAnalytics(getEpisodeAnalyticsList());
+    setMonetization(getCreatorMonetization());
     setLoading(false);
 
     const handleDramasChange = () => setDramas(getCreatorDramas());
-    const handleEpisodesChange = () => setEpisodes(getCreatorEpisodes());
+    const handleEpisodesChange = () => {
+      setEpisodes(getCreatorEpisodes());
+      setAnalytics(getEpisodeAnalyticsList());
+    };
+    const handleMonetizationChange = () => setMonetization(getCreatorMonetization());
 
     if (eventTarget) {
       eventTarget.addEventListener('creator_dramas_changed', handleDramasChange);
       eventTarget.addEventListener('creator_episodes_changed', handleEpisodesChange);
+      eventTarget.addEventListener('creator_monetization_changed', handleMonetizationChange);
     }
 
     return () => {
       if (eventTarget) {
         eventTarget.removeEventListener('creator_dramas_changed', handleDramasChange);
         eventTarget.removeEventListener('creator_episodes_changed', handleEpisodesChange);
+        eventTarget.removeEventListener('creator_monetization_changed', handleMonetizationChange);
       }
     };
   }, []);
@@ -427,12 +630,19 @@ export function useCreatorStore() {
   return {
     dramas,
     episodes,
+    analytics,
+    monetization,
     loading,
     createDrama: createCreatorDrama,
     uploadEpisode: uploadCreatorEpisode,
+    approveDrama,
+    rejectDrama,
+    approveEpisode,
+    rejectEpisode,
     updateVerification: updateEpisodeVerificationStatus,
     deleteEpisode: deleteCreatorEpisode,
     deleteDrama: deleteCreatorDrama,
     runQAScan: runAutomatedVideoQAScan,
+    requestPayout: requestCreatorPayout,
   };
 }

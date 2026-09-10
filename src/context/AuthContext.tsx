@@ -3,18 +3,20 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { getCoinBalance, setCoinBalance } from '@/lib/store';
-
 import { UserRole } from '@/lib/types';
 
 export interface AuthUser {
   id: string;
   email: string;
   username: string;
-  role?: UserRole;
+  role: UserRole;
   studio_name?: string;
   channel_handle?: string;
   creator_category?: string;
   is_verified?: boolean;
+  company_name?: string;
+  industry?: string;
+  ad_budget?: string;
   created_at?: string;
 }
 
@@ -23,11 +25,18 @@ export interface SignUpExtra {
   studio_name?: string;
   channel_handle?: string;
   creator_category?: string;
+  company_name?: string;
+  industry?: string;
+  ad_budget?: string;
 }
 
 interface AuthContextType {
   user: AuthUser | null;
   loading: boolean;
+  isAdmin: boolean;
+  isCreator: boolean;
+  isAdvertiser: boolean;
+  isViewer: boolean;
   signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signUp: (email: string, password: string, username: string, extra?: SignUpExtra) => Promise<{ success: boolean; error?: string }>;
   signOut: () => Promise<void>;
@@ -37,6 +46,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_USER_KEY = 'dramabox_auth_user';
 const LOCAL_STORAGE_USERS_DB = 'dramabox_registered_users';
+
+// Hardcoded Admin Credentials
+export const ADMIN_CREDENTIALS = {
+  email: process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'admin@dramabox.stream',
+  password: process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'Admin@DramaBox2026!',
+};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -57,7 +72,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             studio_name: session.user.user_metadata?.studio_name,
             channel_handle: session.user.user_metadata?.channel_handle,
             creator_category: session.user.user_metadata?.creator_category,
-            is_verified: session.user.user_metadata?.is_verified ?? (session.user.user_metadata?.role === 'creator'),
+            company_name: session.user.user_metadata?.company_name,
+            industry: session.user.user_metadata?.industry,
+            ad_budget: session.user.user_metadata?.ad_budget,
+            is_verified: session.user.user_metadata?.is_verified ?? (session.user.user_metadata?.role === 'creator' || session.user.user_metadata?.role === 'admin'),
             created_at: session.user.created_at,
           };
           setUser(authUser);
@@ -65,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setLoading(false);
           return;
         }
-      } catch (err) {
+      } catch {
         // Fallback to local storage if Supabase credentials are placeholder or offline
       }
 
@@ -97,13 +115,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             studio_name: session.user.user_metadata?.studio_name,
             channel_handle: session.user.user_metadata?.channel_handle,
             creator_category: session.user.user_metadata?.creator_category,
-            is_verified: session.user.user_metadata?.is_verified ?? (session.user.user_metadata?.role === 'creator'),
+            company_name: session.user.user_metadata?.company_name,
+            industry: session.user.user_metadata?.industry,
+            ad_budget: session.user.user_metadata?.ad_budget,
+            is_verified: session.user.user_metadata?.is_verified ?? (session.user.user_metadata?.role === 'creator' || session.user.user_metadata?.role === 'admin'),
             created_at: session.user.created_at,
           };
           setUser(authUser);
           localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(authUser));
-        } else if (event === 'SIGNED_OUT') {
-          // Handled via signOut
         }
       });
 
@@ -127,6 +146,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let registeredUser: AuthUser | null = null;
     const role: UserRole = extra?.role || 'viewer';
     const isCreator = role === 'creator';
+    const isAdvertiser = role === 'advertiser';
+    const isAdmin = role === 'admin';
 
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -139,7 +160,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             studio_name: extra?.studio_name,
             channel_handle: extra?.channel_handle,
             creator_category: extra?.creator_category,
-            is_verified: isCreator,
+            company_name: extra?.company_name,
+            industry: extra?.industry,
+            ad_budget: extra?.ad_budget,
+            is_verified: isCreator || isAdmin,
           },
         },
       });
@@ -154,7 +178,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           studio_name: extra?.studio_name,
           channel_handle: extra?.channel_handle,
           creator_category: extra?.creator_category,
-          is_verified: isCreator,
+          company_name: extra?.company_name,
+          industry: extra?.industry,
+          ad_budget: extra?.ad_budget,
+          is_verified: isCreator || isAdmin,
           created_at: new Date().toISOString(),
         };
 
@@ -186,7 +213,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         studio_name: extra?.studio_name || (isCreator ? username : undefined),
         channel_handle: extra?.channel_handle || (isCreator ? `@${username.toLowerCase().replace(/\s+/g, '')}` : undefined),
         creator_category: extra?.creator_category || (isCreator ? 'romance' : undefined),
-        is_verified: isCreator,
+        company_name: extra?.company_name || (isAdvertiser ? username : undefined),
+        industry: extra?.industry || (isAdvertiser ? 'Entertainment & Media' : undefined),
+        ad_budget: extra?.ad_budget || (isAdvertiser ? '$2,500/mo' : undefined),
+        is_verified: isCreator || isAdmin,
         created_at: new Date().toISOString(),
       };
 
@@ -200,7 +230,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (registeredUser) {
       setUser(registeredUser);
       localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(registeredUser));
-      // Give initial 100 coins
       if (getCoinBalance() < 100) {
         setCoinBalance(100);
       }
@@ -215,9 +244,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // SIGN IN
   const signIn = async (email: string, password: string) => {
     setLoading(true);
-    let supabaseSuccess = false;
     let authenticatedUser: AuthUser | null = null;
 
+    // 1. Check Hardcoded Admin Credentials
+    if (
+      email.toLowerCase().trim() === ADMIN_CREDENTIALS.email.toLowerCase().trim() &&
+      password === ADMIN_CREDENTIALS.password
+    ) {
+      authenticatedUser = {
+        id: 'admin_primary_id',
+        email: ADMIN_CREDENTIALS.email,
+        username: 'Chief Admin',
+        role: 'admin',
+        studio_name: 'DramaBox Operations & Content Review',
+        is_verified: true,
+        created_at: new Date().toISOString(),
+      };
+      setUser(authenticatedUser);
+      localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(authenticatedUser));
+      setLoading(false);
+      return { success: true };
+    }
+
+    // 2. Try Supabase Auth
+    let supabaseSuccess = false;
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -234,15 +284,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           studio_name: data.user.user_metadata?.studio_name,
           channel_handle: data.user.user_metadata?.channel_handle,
           creator_category: data.user.user_metadata?.creator_category,
+          company_name: data.user.user_metadata?.company_name,
+          industry: data.user.user_metadata?.industry,
+          ad_budget: data.user.user_metadata?.ad_budget,
           is_verified: data.user.user_metadata?.is_verified ?? (data.user.user_metadata?.role === 'creator'),
           created_at: data.user.created_at,
         };
       }
     } catch {
-      // Supabase remote call failed / placeholder URL
+      // Supabase remote call failed / offline
     }
 
-    // Fallback sign in simulation
+    // 3. Fallback sign in simulation
     if (!supabaseSuccess) {
       const usersDb = JSON.parse(localStorage.getItem(LOCAL_STORAGE_USERS_DB) || '[]');
       const found = usersDb.find(
@@ -259,21 +312,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           studio_name: found.studio_name,
           channel_handle: found.channel_handle,
           creator_category: found.creator_category,
-          is_verified: found.is_verified ?? (found.role === 'creator'),
+          company_name: found.company_name,
+          industry: found.industry,
+          ad_budget: found.ad_budget,
+          is_verified: found.is_verified ?? (found.role === 'creator' || found.role === 'admin'),
           created_at: found.created_at,
         };
       } else {
+        // Dynamic demo user detection based on email naming
         const isDemoCreator = email.includes('creator') || email === 'creator.studio@dramabox.stream';
-        // If it's a first time test login with any valid password, auto-create for pleasant dev experience
+        const isDemoAdvertiser = email.includes('advertiser') || email.includes('vendor') || email === 'partner@apexbrands.com';
+        const isDemoAdmin = email.includes('admin');
+
+        let detectedRole: UserRole = 'viewer';
+        if (isDemoAdmin) detectedRole = 'admin';
+        else if (isDemoCreator) detectedRole = 'creator';
+        else if (isDemoAdvertiser) detectedRole = 'advertiser';
+
         authenticatedUser = {
-          id: isDemoCreator ? 'creator_demo_id' : 'user_' + Math.random().toString(36).substring(2, 12),
+          id: isDemoCreator ? 'creator_demo_id' : isDemoAdvertiser ? 'advertiser_demo_id' : isDemoAdmin ? 'admin_demo_id' : 'user_' + Math.random().toString(36).substring(2, 12),
           email,
-          username: isDemoCreator ? 'Neon Rebel Studios' : email.split('@')[0],
-          role: isDemoCreator ? 'creator' : 'viewer',
+          username: isDemoAdmin ? 'DramaBox Admin' : isDemoCreator ? 'Neon Rebel Studios' : isDemoAdvertiser ? 'Apex Global Media' : email.split('@')[0],
+          role: detectedRole,
           studio_name: isDemoCreator ? 'Neon Rebel Studios' : undefined,
           channel_handle: isDemoCreator ? '@neonrebel' : undefined,
           creator_category: isDemoCreator ? 'suspense' : undefined,
-          is_verified: isDemoCreator,
+          company_name: isDemoAdvertiser ? 'Apex Global Media Inc.' : undefined,
+          industry: isDemoAdvertiser ? 'Consumer Tech & Mobile Gaming' : undefined,
+          ad_budget: isDemoAdvertiser ? '$5,000/mo' : undefined,
+          is_verified: isDemoCreator || isDemoAdmin,
           created_at: new Date().toISOString(),
         };
       }
@@ -303,8 +370,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const isAdmin = user?.role === 'admin';
+  const isCreator = user?.role === 'creator';
+  const isAdvertiser = user?.role === 'advertiser';
+  const isViewer = !user || user.role === 'viewer';
+
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        isAdmin,
+        isCreator,
+        isAdvertiser,
+        isViewer,
+        signIn,
+        signUp,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

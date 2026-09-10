@@ -3,15 +3,36 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Flame, PlayCircle, User } from 'lucide-react';
+import { Home, Flame, PlayCircle, User, BookOpen, LayoutDashboard, ShieldCheck, Video, Megaphone } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export const MobileNav = () => {
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const dashboardHref =
+    user?.role === 'admin'
+      ? '/admin'
+      : user?.role === 'creator'
+      ? '/creator/dashboard'
+      : user?.role === 'advertiser'
+      ? '/advertiser/dashboard'
+      : '/viewer/dashboard';
+
+  const DashboardIcon =
+    user?.role === 'admin'
+      ? ShieldCheck
+      : user?.role === 'creator'
+      ? Video
+      : user?.role === 'advertiser'
+      ? Megaphone
+      : LayoutDashboard;
 
   const items = [
     { label: 'Home', href: '/', icon: Home },
-    { label: 'Trending', href: '/#trending', icon: Flame },
+    { label: 'Blog', href: '/blog', icon: BookOpen },
     { label: 'Watch', href: '/watch/a1111111-1111-1111-1111-111111111111?ep=1', icon: PlayCircle },
+    { label: 'Dashboard', href: dashboardHref, icon: DashboardIcon },
     { label: 'Profile', href: '/profile', icon: User },
   ];
 
@@ -24,14 +45,14 @@ export const MobileNav = () => {
           <Link
             key={item.label}
             href={item.href}
-            className={`flex flex-col items-center justify-center gap-0.5 w-16 py-1 transition-all ${
+            className={`flex flex-col items-center justify-center gap-0.5 w-14 py-1 transition-all ${
               isActive
                 ? 'text-pink-400 font-bold drop-shadow-[0_0_8px_rgba(255,42,141,0.8)]'
                 : 'text-slate-500 hover:text-slate-300'
             }`}
           >
             <Icon className="w-4 h-4" />
-            <span className="text-[10px]">{item.label}</span>
+            <span className="text-[10px] truncate max-w-[50px]">{item.label}</span>
           </Link>
         );
       })}

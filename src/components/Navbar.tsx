@@ -11,7 +11,8 @@ import {
   X,
   Search,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  ShieldCheck
 } from 'lucide-react';
 import { useCoinBalance } from '@/lib/store';
 import { useAuth } from '@/context/AuthContext';
@@ -33,9 +34,8 @@ export const Navbar = () => {
   const navLinks = [
     { label: 'Discover', href: '/' },
     { label: 'Trending', href: '/#trending' },
-    { label: 'Revenge', href: '/#revenge' },
-    { label: 'Romance', href: '/#romance' },
-    { label: 'Suspense', href: '/#suspense' },
+    { label: 'Creator Blog', href: '/blog' },
+    { label: 'Brand Ads', href: '/vendor/register' },
   ];
 
   const handleClaimBonus = (amount: number) => {
@@ -128,7 +128,7 @@ export const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 p-1 pl-2.5 pr-2 rounded-full border border-pink-500/40 hover:border-pink-400 hover:shadow-[0_0_12px_rgba(255,42,141,0.35)] transition-all bg-[#141126] text-xs font-semibold text-white"
+                  className="flex items-center gap-2 p-1 pl-2.5 pr-2 rounded-full border border-pink-500/40 hover:border-pink-400 hover:shadow-[0_0_12px_rgba(255,42,141,0.35)] transition-all bg-[#141026] text-xs font-semibold text-white"
                 >
                   <span className="max-w-[90px] truncate text-slate-200">{user.username}</span>
                   <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white flex items-center justify-center text-[10px] font-bold shadow-[0_0_8px_rgba(255,42,141,0.5)]">
@@ -143,11 +143,56 @@ export const Navbar = () => {
                       className="fixed inset-0 z-40"
                       onClick={() => setIsUserMenuOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-48 bg-[#100e21] border border-[#2f2756] rounded-xl shadow-[0_0_25px_rgba(0,0,0,0.8)] p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="absolute right-0 mt-2 w-52 bg-[#100e21] border border-[#2f2756] rounded-xl shadow-[0_0_25px_rgba(0,0,0,0.8)] p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                       <div className="px-3 py-2 border-b border-[#231d42]">
-                        <p className="text-xs font-bold text-white truncate">{user.username}</p>
-                        <p className="text-[11px] text-slate-400 truncate">{user.email}</p>
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs font-bold text-white truncate">{user.username}</p>
+                          <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-pink-500/20 text-pink-300 border border-pink-500/30">
+                            {user.role}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-400 truncate mt-0.5">{user.email}</p>
                       </div>
+
+                      {/* Role Specific Quick Dashboard Link */}
+                      {user.role === 'admin' ? (
+                        <Link
+                          href="/admin"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-2 px-3 py-2 text-xs text-purple-300 hover:bg-purple-950/40 rounded-lg font-bold transition-colors"
+                        >
+                          <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
+                          Admin Moderation Portal
+                        </Link>
+                      ) : user.role === 'creator' ? (
+                        <Link
+                          href="/creator/dashboard"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-2 px-3 py-2 text-xs text-pink-300 hover:bg-pink-950/40 rounded-lg font-bold transition-colors"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+                          Creator Studio & Analytics
+                        </Link>
+                      ) : user.role === 'advertiser' ? (
+                        <Link
+                          href="/advertiser/dashboard"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-2 px-3 py-2 text-xs text-amber-300 hover:bg-amber-950/40 rounded-lg font-bold transition-colors"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                          Advertiser Campaign Portal
+                        </Link>
+                      ) : (
+                        <Link
+                          href="/viewer/dashboard"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-2 px-3 py-2 text-xs text-cyan-300 hover:bg-cyan-950/40 rounded-lg font-bold transition-colors"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                          My Viewer Dashboard
+                        </Link>
+                      )}
+
                       <Link
                         href="/profile"
                         onClick={() => setIsUserMenuOpen(false)}
@@ -156,9 +201,10 @@ export const Navbar = () => {
                         <User className="w-3.5 h-3.5 text-cyan-400" />
                         My Profile & Wallet
                       </Link>
+
                       <button
                         onClick={handleSignOut}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-400 hover:bg-rose-950/40 rounded-lg font-medium transition-colors text-left"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-400 hover:bg-rose-950/40 rounded-lg font-medium transition-colors text-left border-t border-[#1f1a38] mt-1"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         Sign Out
