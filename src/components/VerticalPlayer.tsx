@@ -297,15 +297,15 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({
             <div className="flex flex-col items-center">
               <button
                 onClick={() => toggleLike(currentEpisode.id)}
-                className={`w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-md border transition-all ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md border transition-all ${
                   isLiked(currentEpisode.id)
-                    ? 'bg-pink-600 border-pink-400 text-white shadow-[0_0_20px_rgba(255,42,141,0.9)]'
-                    : 'bg-black/50 border-white/20 text-white hover:border-pink-500/70 hover:shadow-[0_0_10px_rgba(255,42,141,0.4)]'
+                    ? 'bg-[#FF007A] border-[#FF007A] text-white shadow-[0_2px_14px_rgba(255,0,122,0.6)]'
+                    : 'bg-black/60 border-white/20 text-white hover:border-[#FF007A]'
                 }`}
                 aria-label="Like episode"
               >
                 <Heart
-                  className={`w-5 h-5 ${
+                  className={`w-4 h-4 ${
                     isLiked(currentEpisode.id) ? 'fill-current' : ''
                   }`}
                 />
@@ -319,10 +319,10 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({
             <div className="flex flex-col items-center">
               <button
                 onClick={() => setIsDrawerOpen(true)}
-                className="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white hover:border-cyan-400 hover:text-cyan-300 hover:shadow-[0_0_12px_rgba(0,240,255,0.4)] flex items-center justify-center transition-all"
+                className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white hover:border-[#FF007A] hover:text-[#FF007A] flex items-center justify-center transition-all"
                 aria-label="Episodes list"
               >
-                <List className="w-5 h-5" />
+                <List className="w-4 h-4" />
               </button>
               <span className="text-[10px] text-white font-medium mt-1 drop-shadow-xs">
                 Episodes
@@ -333,10 +333,10 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({
             <div className="flex flex-col items-center">
               <button
                 onClick={handleShare}
-                className="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white hover:border-pink-500 hover:text-pink-300 hover:shadow-[0_0_12px_rgba(255,42,141,0.4)] flex items-center justify-center transition-all"
+                className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white hover:border-[#FF007A] hover:text-[#FF007A] flex items-center justify-center transition-all"
                 aria-label="Share episode"
               >
-                <Share2 className="w-5 h-5" />
+                <Share2 className="w-4 h-4" />
               </button>
               <span className="text-[10px] text-white font-medium mt-1 drop-shadow-xs">
                 Share
@@ -345,34 +345,34 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({
           </div>
 
           {/* BOTTOM OVERLAY INFO & PROGRESS BAR */}
-          <div className="absolute bottom-0 left-0 right-0 z-30 p-4 bg-gradient-to-t from-black/95 via-black/50 to-transparent text-white">
+          <div className="absolute bottom-0 left-0 right-0 z-30 p-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent text-white">
             <div className="pr-14">
               <div className="flex items-center gap-2 mb-1">
-                <span className="bg-pink-500/30 text-pink-300 border border-pink-500/50 text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-xs shadow-[0_0_8px_rgba(255,42,141,0.4)]">
+                <span className="bg-[#FF007A]/20 text-[#FF007A] border border-[#FF007A]/40 text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-xs">
                   EP {currentEpisode?.episode_number}
                 </span>
                 <h3 className="text-sm font-semibold truncate drop-shadow-xs">
                   {drama.title}
                 </h3>
               </div>
-              <p className="text-xs text-slate-300 line-clamp-1 font-medium">
+              <p className="text-xs text-[#8F8F98] line-clamp-1 font-medium">
                 {currentEpisode?.title}
               </p>
             </div>
 
             {/* Progress Bar */}
-            <div className="mt-3">
+            <div className="mt-2.5">
               <div
                 onClick={handleSeek}
-                className="w-full h-1 bg-white/20 hover:h-2 rounded-full cursor-pointer transition-all relative overflow-hidden"
+                className="w-full h-1 bg-white/20 hover:h-1.5 rounded-full cursor-pointer transition-all relative overflow-hidden"
               >
                 <div
-                  className="h-full bg-gradient-to-r from-pink-500 to-cyan-400 rounded-full transition-all duration-100 shadow-[0_0_8px_rgba(255,42,141,0.8)]"
+                  className="h-full bg-[#FF007A] rounded-full transition-all duration-100 shadow-[0_0_8px_rgba(255,0,122,0.8)]"
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <div className="flex justify-between items-center text-[10px] text-slate-400 mt-1">
-                <span className="text-cyan-300 font-mono">{formatTime(currentTime)}</span>
+              <div className="flex justify-between items-center text-[10px] text-[#8F8F98] mt-1">
+                <span className="text-[#FF007A] font-mono">{formatTime(currentTime)}</span>
                 <span className="font-mono">{formatTime(duration)}</span>
               </div>
             </div>
@@ -380,37 +380,37 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({
 
           {/* PAYWALL OVERLAY (Triggered when episode is locked) */}
           {isPremiumLocked && (
-            <div className="absolute inset-0 z-40 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center text-white animate-in fade-in duration-200">
-              <div className="w-14 h-14 rounded-full bg-pink-500/20 border border-pink-500/60 flex items-center justify-center mb-3 shadow-[0_0_20px_rgba(255,42,141,0.4)]">
-                <Lock className="w-7 h-7 text-pink-400" />
+            <div className="absolute inset-0 z-40 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center text-white animate-in fade-in duration-200">
+              <div className="w-12 h-12 rounded-full bg-[#FF007A]/15 border border-[#FF007A]/50 flex items-center justify-center mb-3">
+                <Lock className="w-6 h-6 text-[#FF007A]" />
               </div>
 
-              <span className="text-[11px] font-bold uppercase tracking-widest text-pink-400 filter drop-shadow-[0_0_4px_rgba(255,42,141,0.8)]">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#FF007A]">
                 PREMIUM EPISODE
               </span>
-              <h3 className="text-lg font-bold text-white mt-1">
+              <h3 className="text-base sm:text-lg font-bold text-white mt-1">
                 Episode {currentEpisode.episode_number} is Locked
               </h3>
-              <p className="text-xs text-slate-300 mt-1 max-w-[260px] line-clamp-2">
-                Unlock with coins to keep watching the dramatic twists of {drama.title}.
+              <p className="text-xs text-[#8F8F98] mt-1 max-w-[260px] line-clamp-2">
+                Unlock with coins to keep watching {drama.title} on YarrowPlay.
               </p>
 
               {/* Coin Balance Pill */}
-              <div className="mt-4 flex items-center gap-2 bg-[#120f26] border border-cyan-500/40 px-3 py-1.5 rounded-full text-xs shadow-[0_0_10px_rgba(0,240,255,0.25)]">
-                <Coins className="w-4 h-4 text-amber-400" />
-                <span>Your Balance: <strong className="neon-text-cyan">{balance} Coins</strong></span>
+              <div className="mt-4 flex items-center gap-2 bg-[#151515] border border-[#292929] px-3.5 py-1.5 rounded-full text-xs">
+                <Coins className="w-3.5 h-3.5 text-[#FFC400]" />
+                <span>Your Balance: <strong className="text-[#FF007A]">{balance} Coins</strong></span>
               </div>
 
               {/* Unlock Actions */}
-              <div className="mt-5 w-full max-w-xs space-y-2">
+              <div className="mt-4 w-full max-w-xs space-y-2">
                 <button
                   onClick={() => {
                     setSelectedEpForUnlock(currentEpisode);
                     setIsUnlockModalOpen(true);
                   }}
-                  className="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold py-2.5 px-4 rounded-xl text-xs hover:from-pink-500 hover:to-purple-500 transition-all shadow-[0_0_20px_rgba(255,42,141,0.6)] flex items-center justify-center gap-2 hover:scale-[1.02]"
+                  className="w-full bg-[#FF007A] hover:bg-[#E6006E] text-white font-bold py-2.5 px-4 rounded-full text-xs transition-all shadow-[0_4px_16px_rgba(255,0,122,0.35)] flex items-center justify-center gap-2 hover:scale-[1.02]"
                 >
-                  <Coins className="w-4 h-4 text-amber-300" />
+                  <Coins className="w-3.5 h-3.5 text-[#FFC400]" />
                   Unlock for 20 Coins
                 </button>
 
@@ -419,9 +419,9 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({
                     addCoins(50);
                     showToast('+50 Daily Coins added!', 'success');
                   }}
-                  className="w-full bg-[#16122d] border border-cyan-500/40 text-cyan-300 font-medium py-2 px-4 rounded-xl text-xs hover:bg-[#201a40] transition-colors flex items-center justify-center gap-1.5 hover:shadow-[0_0_12px_rgba(0,240,255,0.3)]"
+                  className="w-full bg-[#151515] border border-[#292929] text-white hover:text-[#FF007A] hover:border-[#FF007A] font-medium py-2 px-4 rounded-full text-xs transition-colors flex items-center justify-center gap-1.5"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#FF007A]" />
                   Claim +50 Free Coins
                 </button>
               </div>
@@ -429,27 +429,27 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({
           )}
         </div>
 
-        {/* DESKTOP SIDEBAR / COMPANION PANEL (Neon Dark Edition) */}
-        <div className="hidden lg:flex flex-col w-80 bg-[#0e0c1c] border border-[#221c3d] rounded-2xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.6)]">
+        {/* DESKTOP SIDEBAR / COMPANION PANEL (YarrowPlay Edition) */}
+        <div className="hidden lg:flex flex-col w-80 bg-[#151515] border border-[#292929] rounded-2xl p-5 shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
           {/* Series Meta */}
-          <div className="flex items-start gap-3 pb-4 border-b border-[#1f1938]">
+          <div className="flex items-start gap-3 pb-3.5 border-b border-[#222222]">
             <img
               src={drama.cover_image_url}
               alt={drama.title}
-              className="w-16 h-20 object-cover rounded-lg border border-[#2e2652] shrink-0"
+              className="w-14 h-18 object-cover rounded-lg border border-[#292929] shrink-0"
             />
             <div>
-              <h2 className="text-sm font-bold text-white line-clamp-2 leading-snug">
+              <h2 className="text-xs sm:text-sm font-bold text-white line-clamp-2 leading-snug">
                 {drama.title}
               </h2>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-[11px] text-[#8F8F98] mt-1">
                 {drama.total_episodes} Total Episodes
               </p>
-              <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+              <div className="flex items-center gap-1 mt-1.5 flex-wrap">
                 {drama.tags.slice(0, 2).map((tag, idx) => (
                   <span
                     key={idx}
-                    className="text-[10px] font-medium bg-[#16122b] text-pink-300 border border-pink-500/25 px-1.5 py-0.5 rounded"
+                    className="text-[10px] font-medium bg-[#1c1c1c] text-[#FF007A] border border-[#FF007A]/25 px-1.5 py-0.5 rounded"
                   >
                     {tag}
                   </span>
@@ -459,52 +459,52 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({
           </div>
 
           {/* Episode Controls */}
-          <div className="py-4 border-b border-[#1f1938]">
-            <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2.5">
-              Quick Navigation
+          <div className="py-3 border-b border-[#222222]">
+            <h4 className="text-[11px] font-bold text-[#8F8F98] uppercase tracking-wider mb-2">
+              Navigation
             </h4>
             <div className="flex gap-2">
               <button
                 onClick={handlePrevEpisode}
                 disabled={currentEpisodeIndex === 0}
-                className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 border border-[#261f47] bg-[#120f26] rounded-lg text-xs font-semibold text-slate-200 hover:text-cyan-300 hover:border-cyan-400/50 disabled:opacity-40 transition-all"
+                className="flex-1 flex items-center justify-center gap-1 py-1.5 px-3 border border-[#292929] bg-[#191919] rounded-lg text-xs font-semibold text-white hover:border-[#FF007A] disabled:opacity-40 transition-all"
               >
-                <ChevronUp className="w-4 h-4" /> Previous
+                <ChevronUp className="w-3.5 h-3.5" /> Previous
               </button>
               <button
                 onClick={handleNextEpisode}
                 disabled={currentEpisodeIndex === episodes.length - 1}
-                className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg text-xs font-semibold hover:from-pink-500 hover:to-purple-500 shadow-[0_0_12px_rgba(255,42,141,0.5)] disabled:opacity-40 transition-all"
+                className="flex-1 flex items-center justify-center gap-1 py-1.5 px-3 bg-[#FF007A] hover:bg-[#E6006E] text-white rounded-lg text-xs font-bold shadow-[0_2px_10px_rgba(255,0,122,0.35)] disabled:opacity-40 transition-all"
               >
-                Next <ChevronDown className="w-4 h-4" />
+                Next <ChevronDown className="w-3.5 h-3.5" />
               </button>
             </div>
-            <p className="text-[11px] text-slate-500 mt-2 text-center">
+            <p className="text-[10px] text-[#8F8F98] mt-2 text-center">
               Tip: Press Up/Down arrow keys or spacebar
             </p>
           </div>
 
           {/* Current Episode Synopsis */}
-          <div className="py-4 border-b border-[#1f1938] flex-1">
+          <div className="py-3 border-b border-[#222222] flex-1">
             <h4 className="text-xs font-semibold text-white mb-1">
               Ep. {currentEpisode?.episode_number}: {currentEpisode?.title}
             </h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-[#8F8F98] leading-relaxed line-clamp-4">
               {drama.description}
             </p>
           </div>
 
           {/* All Episodes Drawer Trigger */}
-          <div className="pt-4">
+          <div className="pt-3">
             <button
               onClick={() => setIsDrawerOpen(true)}
-              className="w-full flex items-center justify-between p-3 border border-[#28214a] hover:border-pink-500/70 hover:shadow-[0_0_15px_rgba(255,42,141,0.25)] rounded-xl text-xs font-semibold text-white transition-all bg-[#131026]"
+              className="w-full flex items-center justify-between p-2.5 border border-[#292929] hover:border-[#FF007A] rounded-xl text-xs font-semibold text-white transition-all bg-[#191919]"
             >
               <span className="flex items-center gap-2">
-                <List className="w-4 h-4 text-cyan-400" />
+                <List className="w-4 h-4 text-[#FF007A]" />
                 Browse All {episodes.length} Episodes
               </span>
-              <span className="text-pink-400">View</span>
+              <span className="text-[#FF007A] font-bold">View</span>
             </button>
           </div>
         </div>

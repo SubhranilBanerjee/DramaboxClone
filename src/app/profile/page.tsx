@@ -5,16 +5,12 @@ import Link from 'next/link';
 import {
   Coins,
   Sparkles,
-  Shield,
   Play,
   Bookmark,
   CheckCircle2,
   Database,
-  ArrowRight,
   User,
-  Plus,
   LogOut,
-  LogIn
 } from 'lucide-react';
 import {
   useCoinBalance,
@@ -75,53 +71,53 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 relative z-10">
-      {/* Profile Header (Neon Cyber Card) */}
-      <div className="bg-[#0e0c1c] border border-[#261f47] rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-[0_0_35px_rgba(255,42,141,0.15)] relative overflow-hidden">
-        <div className="flex items-center gap-4 relative z-10">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-pink-600 to-purple-600 text-white flex items-center justify-center text-xl font-black shadow-[0_0_20px_rgba(255,42,141,0.6)]">
-            {user ? user.username.charAt(0).toUpperCase() : <User className="w-8 h-8" />}
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 relative z-10 text-white">
+      {/* Profile Header */}
+      <div className="bg-[#151515] border border-[#292929] rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-[0_4px_30px_rgba(0,0,0,0.8)] relative overflow-hidden">
+        <div className="flex items-center gap-3.5 relative z-10">
+          <div className="w-13 h-13 rounded-2xl bg-[#FF007A] text-white flex items-center justify-center text-lg font-black shadow-[0_2px_12px_rgba(255,0,122,0.4)]">
+            {user ? user.username.charAt(0).toUpperCase() : <User className="w-6 h-6" />}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-white">
+              <h1 className="text-base sm:text-lg font-bold text-white">
                 {user ? user.username : 'Guest Viewer'}
               </h1>
-              <span className="text-[10px] font-extrabold bg-pink-500/20 text-pink-300 border border-pink-500/40 px-2 py-0.5 rounded shadow-[0_0_6px_rgba(255,42,141,0.4)]">
+              <span className="text-[10px] font-bold bg-[#FF007A]/15 text-[#FF007A] border border-[#FF007A]/30 px-2 py-0.5 rounded-full">
                 {user ? 'VIP MEMBER' : 'GUEST'}
               </span>
             </div>
-            <p className="text-xs text-slate-400 font-mono mt-1">
+            <p className="text-xs text-[#8F8F98] font-mono mt-0.5">
               {user ? user.email : `Guest ID: ${guestId}`}
             </p>
             {user && (
               <button
                 onClick={handleSignOut}
-                className="inline-flex items-center gap-1.5 text-xs text-rose-400 hover:text-rose-300 font-medium mt-2 transition-colors"
+                className="inline-flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 font-medium mt-1.5 transition-colors"
               >
-                <LogOut className="w-3.5 h-3.5" /> Sign Out
+                <LogOut className="w-3 h-3" /> Sign Out
               </button>
             )}
           </div>
         </div>
 
         {/* Right Action Block */}
-        <div className="flex flex-col sm:items-end w-full sm:w-auto gap-3 relative z-10">
+        <div className="flex flex-col sm:items-end w-full sm:w-auto gap-2.5 relative z-10">
           {/* Quick Balance Status */}
-          <div className="bg-[#141026] border border-[#2d2454] rounded-xl px-5 py-3 text-right flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 shadow-[inset_0_0_15px_rgba(0,0,0,0.4)]">
+          <div className="bg-[#191919] border border-[#292929] rounded-xl px-4 py-2 text-right flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3">
             <div>
-              <div className="text-xs text-slate-400 font-medium">Available Balance</div>
-              <div className="text-xl font-extrabold text-white flex items-center gap-1.5 justify-end">
-                <Coins className="w-5 h-5 text-amber-400 filter drop-shadow-[0_0_4px_rgba(251,191,36,0.8)]" />
-                <span className="neon-text-cyan">{balance} Coins</span>
+              <div className="text-[10px] text-[#8F8F98]">Available Balance</div>
+              <div className="text-base font-extrabold text-white flex items-center gap-1.5 justify-end">
+                <Coins className="w-4 h-4 text-[#FFC400]" />
+                <span className="text-[#FF007A] font-bold">{balance} Coins</span>
               </div>
             </div>
             <button
               onClick={handleClaimDaily}
-              className="inline-flex items-center gap-1 bg-gradient-to-r from-pink-600 to-purple-600 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-[0_0_12px_rgba(255,42,141,0.5)] hover:shadow-[0_0_20px_rgba(255,42,141,0.8)] transition-all"
+              className="inline-flex items-center gap-1 bg-[#FF007A] hover:bg-[#E6006E] text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-[0_2px_8px_rgba(255,0,122,0.3)] transition-all"
             >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
-              Claim +50 Daily
+              <Sparkles className="w-3 h-3 text-white" />
+              Claim +50 Free
             </button>
           </div>
 
@@ -133,7 +129,7 @@ export default function ProfilePage() {
                   setAuthMode('login');
                   setIsAuthOpen(true);
                 }}
-                className="text-xs font-semibold text-slate-300 hover:text-white px-3 py-1.5 border border-[#28214a] hover:border-pink-500/60 rounded-lg transition-colors bg-[#120f26]"
+                className="text-xs font-semibold text-[#8F8F98] hover:text-white px-3 py-1.5 border border-[#292929] rounded-full transition-colors bg-[#191919]"
               >
                 Sign In
               </button>
@@ -142,9 +138,8 @@ export default function ProfilePage() {
                   setAuthMode('register');
                   setIsAuthOpen(true);
                 }}
-                className="text-xs font-bold bg-pink-600 hover:bg-pink-500 text-white px-3 py-1.5 rounded-lg transition-all shadow-[0_0_12px_rgba(255,42,141,0.5)] flex items-center gap-1"
+                className="text-xs font-bold bg-[#FF007A] hover:bg-[#E6006E] text-white px-3.5 py-1.5 rounded-full transition-all shadow-[0_2px_8px_rgba(255,0,122,0.3)]"
               >
-                <Sparkles className="w-3 h-3 text-cyan-300" />
                 Create Account
               </button>
             </div>
@@ -152,114 +147,114 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* COIN STORE PACKAGES */}
-      <section className="bg-[#0e0c1c] border border-[#221c3d] rounded-2xl p-6 space-y-4 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+      {/* COIN PACKAGES */}
+      <section className="bg-[#151515] border border-[#292929] rounded-2xl p-5 space-y-3 shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-white tracking-wide">
-              COIN <span className="neon-text-pink">TOP-UP STORE</span>
+            <h2 className="text-sm sm:text-base font-bold text-white tracking-wide uppercase">
+              COIN <span className="text-[#FF007A]">PACKAGES</span>
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Unlock drama episodes sequentially or binge-watch full seasons.
+            <p className="text-[11px] text-[#8F8F98]">
+              Unlock drama episodes sequentially or binge full seasons.
             </p>
           </div>
-          <span className="text-[10px] text-cyan-300 font-bold bg-cyan-950/60 px-2.5 py-1 rounded-md border border-cyan-500/40 shadow-[0_0_8px_rgba(0,240,255,0.25)]">
-            INSTANT DELIVERY
+          <span className="text-[10px] text-[#FF007A] font-bold bg-[#FF007A]/10 px-2 py-0.5 rounded-full border border-[#FF007A]/30">
+            INSTANT
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {/* Package 1 */}
-          <div className="border border-[#231d3d] bg-[#120f26] rounded-xl p-4 flex flex-col justify-between hover:border-pink-500/60 transition-all">
+          <div className="border border-[#292929] bg-[#191919] rounded-xl p-3.5 flex flex-col justify-between hover:border-[#FF007A]/50 transition-all">
             <div>
-              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Starter</div>
-              <div className="text-lg font-extrabold text-white mt-1">100 Coins</div>
-              <div className="text-xs text-slate-400 mt-1">Unlocks 5 episodes</div>
+              <div className="text-[10px] font-semibold text-[#8F8F98] uppercase tracking-wider">Starter</div>
+              <div className="text-base font-extrabold text-white mt-0.5">100 Coins</div>
+              <div className="text-[11px] text-[#8F8F98] mt-0.5">Unlocks 5 episodes</div>
             </div>
             <button
               onClick={() => {
                 addCoins(100);
                 showToast('Added 100 Coins to balance!', 'success');
               }}
-              className="mt-4 w-full text-xs font-bold bg-[#1a1538] hover:bg-pink-600 text-white py-2 rounded-lg transition-all hover:shadow-[0_0_12px_rgba(255,42,141,0.5)]"
+              className="mt-3 w-full text-xs font-bold bg-[#262626] hover:bg-[#FF007A] text-white py-1.5 rounded-full transition-all"
             >
-              Add 100 Coins ($0.99)
+              $0.99
             </button>
           </div>
 
           {/* Package 2 */}
-          <div className="border border-pink-500/70 bg-[#16112d] rounded-xl p-4 flex flex-col justify-between relative shadow-[0_0_20px_rgba(255,42,141,0.25)]">
-            <div className="absolute -top-2 right-3 bg-pink-500 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider shadow-[0_0_8px_rgba(255,42,141,0.7)]">
-              Most Popular
+          <div className="border border-[#FF007A]/60 bg-[#221019] rounded-xl p-3.5 flex flex-col justify-between relative shadow-[0_0_15px_rgba(255,0,122,0.15)]">
+            <div className="absolute -top-2 right-3 bg-[#FF007A] text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">
+              Popular
             </div>
             <div>
-              <div className="text-xs font-semibold text-pink-400 uppercase tracking-wider">Binge Pack</div>
-              <div className="text-lg font-extrabold text-white mt-1 neon-text-pink">350 Coins</div>
-              <div className="text-xs text-slate-300 mt-1">Unlocks 17+ episodes</div>
+              <div className="text-[10px] font-semibold text-pink-300 uppercase tracking-wider">Binge Pack</div>
+              <div className="text-base font-extrabold text-white mt-0.5">350 Coins</div>
+              <div className="text-[11px] text-[#8F8F98] mt-0.5">Unlocks 17+ episodes</div>
             </div>
             <button
               onClick={() => {
                 addCoins(350);
                 showToast('Added 350 Coins to balance!', 'success');
               }}
-              className="mt-4 w-full text-xs font-bold bg-gradient-to-r from-pink-600 to-purple-600 text-white hover:from-pink-500 hover:to-purple-500 py-2 rounded-lg shadow-[0_0_15px_rgba(255,42,141,0.6)] hover:scale-105 transition-all"
+              className="mt-3 w-full text-xs font-bold bg-[#FF007A] hover:bg-[#E6006E] text-white py-1.5 rounded-full shadow-[0_2px_8px_rgba(255,0,122,0.3)] transition-all"
             >
-              Add 350 Coins ($2.99)
+              $2.99
             </button>
           </div>
 
           {/* Package 3 */}
-          <div className="border border-[#231d3d] bg-[#120f26] rounded-xl p-4 flex flex-col justify-between hover:border-cyan-500/60 transition-all">
+          <div className="border border-[#292929] bg-[#191919] rounded-xl p-3.5 flex flex-col justify-between hover:border-[#FF007A]/50 transition-all">
             <div>
-              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Ultimate Reel</div>
-              <div className="text-lg font-extrabold text-white mt-1 neon-text-cyan">1000 Coins</div>
-              <div className="text-xs text-slate-400 mt-1">Unlimited unlocks for multiple series</div>
+              <div className="text-[10px] font-semibold text-[#8F8F98] uppercase tracking-wider">Ultimate</div>
+              <div className="text-base font-extrabold text-white mt-0.5">1000 Coins</div>
+              <div className="text-[11px] text-[#8F8F98] mt-0.5">Unlimited for multiple series</div>
             </div>
             <button
               onClick={() => {
                 addCoins(1000);
                 showToast('Added 1000 Coins to balance!', 'success');
               }}
-              className="mt-4 w-full text-xs font-bold bg-[#1a1538] hover:bg-cyan-500 hover:text-slate-950 text-white py-2 rounded-lg transition-all hover:shadow-[0_0_12px_rgba(0,240,255,0.5)]"
+              className="mt-3 w-full text-xs font-bold bg-[#262626] hover:bg-[#FF007A] text-white py-1.5 rounded-full transition-all"
             >
-              Add 1000 Coins ($6.99)
+              $6.99
             </button>
           </div>
         </div>
       </section>
 
-      {/* TABS (Unlocked Episodes vs Bookmarks vs Supabase Status) */}
+      {/* TABS */}
       <section className="space-y-4">
-        <div className="flex border-b border-[#201a3b] gap-6">
+        <div className="flex border-b border-[#292929] gap-4">
           <button
             onClick={() => setActiveTab('unlocks')}
-            className={`pb-3 text-sm font-bold transition-all border-b-2 ${
+            className={`pb-2.5 text-xs font-bold transition-all border-b-2 ${
               activeTab === 'unlocks'
-                ? 'border-pink-500 text-pink-400 drop-shadow-[0_0_8px_rgba(255,42,141,0.6)]'
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                ? 'border-[#FF007A] text-[#FF007A]'
+                : 'border-transparent text-[#8F8F98] hover:text-white'
             }`}
           >
             Unlocked Episodes ({unlocked.length})
           </button>
           <button
             onClick={() => setActiveTab('bookmarks')}
-            className={`pb-3 text-sm font-bold transition-all border-b-2 ${
+            className={`pb-2.5 text-xs font-bold transition-all border-b-2 ${
               activeTab === 'bookmarks'
-                ? 'border-cyan-400 text-cyan-300 drop-shadow-[0_0_8px_rgba(0,240,255,0.6)]'
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                ? 'border-[#FF007A] text-[#FF007A]'
+                : 'border-transparent text-[#8F8F98] hover:text-white'
             }`}
           >
-            My Saved Dramas ({bookmarkedDramas.length})
+            Saved Watchlist ({bookmarkedDramas.length})
           </button>
           <button
             onClick={() => setActiveTab('supabase')}
-            className={`pb-3 text-sm font-bold transition-all border-b-2 ${
+            className={`pb-2.5 text-xs font-bold transition-all border-b-2 ${
               activeTab === 'supabase'
-                ? 'border-purple-500 text-purple-400 drop-shadow-[0_0_8px_rgba(176,38,255,0.6)]'
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                ? 'border-[#FF007A] text-[#FF007A]'
+                : 'border-transparent text-[#8F8F98] hover:text-white'
             }`}
           >
-            Supabase DB Config
+            Database Status
           </button>
         </div>
 
@@ -267,51 +262,51 @@ export default function ProfilePage() {
         {activeTab === 'unlocks' && (
           <div>
             {unlockedDetails.length === 0 ? (
-              <div className="text-center py-12 bg-[#0e0c1c] border border-[#221c3d] rounded-2xl">
-                <Coins className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-                <p className="text-sm font-bold text-white">No unlocked premium episodes yet</p>
-                <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+              <div className="text-center py-10 bg-[#151515] border border-[#292929] rounded-2xl">
+                <Coins className="w-7 h-7 text-[#8F8F98] mx-auto mb-2" />
+                <p className="text-xs font-bold text-white">No unlocked premium episodes yet</p>
+                <p className="text-[11px] text-[#8F8F98] mt-0.5 max-w-sm mx-auto">
                   Episodes 1–5 are free for all dramas. Unlock premium episodes 6+ to watch exclusive twists!
                 </p>
                 <Link
                   href="/"
-                  className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-pink-600 to-purple-600 text-white px-5 py-2.5 rounded-xl shadow-[0_0_12px_rgba(255,42,141,0.5)] hover:scale-105 transition-all"
+                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold bg-[#FF007A] hover:bg-[#E6006E] text-white px-4 py-2 rounded-full shadow-[0_2px_8px_rgba(255,0,122,0.3)] transition-all"
                 >
                   Explore Dramas
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
                 {unlockedDetails.map((item) => (
                   item && (
                     <div
                       key={item.id}
-                      className="border border-[#231d3d] rounded-xl p-3.5 bg-[#0e0c1c] flex items-center justify-between gap-3 hover:border-pink-500/60 transition-all shadow-[0_0_12px_rgba(0,0,0,0.4)]"
+                      className="border border-[#292929] rounded-xl p-3 bg-[#151515] flex items-center justify-between gap-3 hover:border-[#FF007A] transition-all"
                     >
-                      <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex items-center gap-2.5 min-w-0">
                         {item.coverUrl && (
                           <img
                             src={item.coverUrl}
                             alt=""
-                            className="w-12 h-14 object-cover rounded-lg shrink-0 border border-[#261f47]"
+                            className="w-10 h-12 object-cover rounded-lg shrink-0 border border-[#292929]"
                           />
                         )}
                         <div className="min-w-0">
                           <p className="text-xs font-bold text-white truncate">
                             {item.dramaTitle}
                           </p>
-                          <span className="inline-flex items-center gap-1 text-[11px] text-cyan-300 font-medium mt-0.5">
-                            <CheckCircle2 className="w-3 h-3 text-cyan-400" /> Ep. {item.epNum} Unlocked
+                          <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 font-medium mt-0.5">
+                            <CheckCircle2 className="w-2.5 h-2.5" /> Ep. {item.epNum} Unlocked
                           </span>
                         </div>
                       </div>
 
                       <Link
                         href={`/watch/${item.dramaId}?ep=${item.epNum}`}
-                        className="p-2.5 rounded-lg bg-pink-600 text-white hover:bg-pink-500 shadow-[0_0_10px_rgba(255,42,141,0.6)] transition-all shrink-0"
+                        className="p-2 rounded-full bg-[#FF007A] text-white hover:bg-[#E6006E] shadow-[0_2px_8px_rgba(255,0,122,0.4)] transition-all shrink-0"
                         aria-label="Play unlocked episode"
                       >
-                        <Play className="w-3.5 h-3.5 fill-current" />
+                        <Play className="w-3 h-3 fill-current" />
                       </Link>
                     </div>
                   )
@@ -325,21 +320,21 @@ export default function ProfilePage() {
         {activeTab === 'bookmarks' && (
           <div>
             {bookmarkedDramas.length === 0 ? (
-              <div className="text-center py-12 bg-[#0e0c1c] border border-[#221c3d] rounded-2xl">
-                <Bookmark className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-                <p className="text-sm font-bold text-white">Your saved list is empty</p>
-                <p className="text-xs text-slate-400 mt-1">
-                  Click the bookmark button on any drama page to save it for quick access.
+              <div className="text-center py-10 bg-[#151515] border border-[#292929] rounded-2xl">
+                <Bookmark className="w-7 h-7 text-[#8F8F98] mx-auto mb-2" />
+                <p className="text-xs font-bold text-white">Your saved watchlist is empty</p>
+                <p className="text-[11px] text-[#8F8F98] mt-0.5">
+                  Click the bookmark button on any drama to add it to your watchlist.
                 </p>
                 <Link
                   href="/"
-                  className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-pink-600 to-purple-600 text-white px-5 py-2.5 rounded-xl shadow-[0_0_12px_rgba(255,42,141,0.5)] hover:scale-105 transition-all"
+                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold bg-[#FF007A] hover:bg-[#E6006E] text-white px-4 py-2 rounded-full shadow-[0_2px_8px_rgba(255,0,122,0.3)] transition-all"
                 >
                   Browse Trending
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {bookmarkedDramas.map((drama) => (
                   <DramaCard key={drama.id} drama={drama} />
                 ))}
@@ -348,35 +343,31 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* TAB 3: SUPABASE INTEGRATION STATUS */}
+        {/* TAB 3: SUPABASE STATUS */}
         {activeTab === 'supabase' && (
-          <div className="bg-[#0e0c1c] border border-[#221c3d] rounded-2xl p-6 space-y-4">
-            <div className="flex items-center gap-3 pb-3 border-b border-[#201a3b]">
-              <div className="w-9 h-9 rounded-xl bg-[#17122e] border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.3)]">
-                <Database className="w-5 h-5" />
+          <div className="bg-[#151515] border border-[#292929] rounded-2xl p-5 space-y-3">
+            <div className="flex items-center gap-2.5 pb-2.5 border-b border-[#292929]">
+              <div className="w-8 h-8 rounded-xl bg-[#191919] border border-[#292929] flex items-center justify-center text-[#FF007A]">
+                <Database className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white">Supabase Configuration</h3>
-                <p className="text-xs text-slate-400">Connected with provided environment keys</p>
+                <h3 className="text-xs font-bold text-white">Database & Auth Status</h3>
+                <p className="text-[10px] text-[#8F8F98]">YarrowPlay Supabase Backend</p>
               </div>
             </div>
 
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between py-1.5 border-b border-[#1b1633]">
-                <span className="text-slate-400">NEXT_PUBLIC_SUPABASE_URL</span>
-                <span className="font-mono text-cyan-300">https://supabase.co</span>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between py-1 border-b border-[#222222]">
+                <span className="text-[#8F8F98]">Backend Engine</span>
+                <span className="font-mono text-white">Supabase Client</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-[#1b1633]">
-                <span className="text-slate-400">Anon Key Status</span>
-                <span className="font-mono text-emerald-400">Configured (JWT Present)</span>
+              <div className="flex justify-between py-1 border-b border-[#222222]">
+                <span className="text-[#8F8F98]">Auth Mode</span>
+                <span className="font-mono text-emerald-400">auth.users + localStorage Session</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-[#1b1633]">
-                <span className="text-slate-400">Auth Engine</span>
-                <span className="font-mono text-pink-300">Supabase Auth (auth.users + profiles table)</span>
-              </div>
-              <div className="flex justify-between py-1.5">
-                <span className="text-slate-400">Current Session</span>
-                <span className="font-mono text-cyan-300">
+              <div className="flex justify-between py-1">
+                <span className="text-[#8F8F98]">Current Session</span>
+                <span className="font-mono text-[#FF007A]">
                   {user ? `${user.username} (${user.email})` : 'Guest Session'}
                 </span>
               </div>

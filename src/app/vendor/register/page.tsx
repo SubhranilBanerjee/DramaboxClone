@@ -62,7 +62,7 @@ export default function VendorRegisterPage() {
     );
 
     if (res.success) {
-      showToast('Advertiser account created! Welcome to DramaBox Ads.', 'success');
+      showToast('Advertiser account created! Welcome to YarrowPlay Ads.', 'success');
       router.push('/advertiser/dashboard');
     } else {
       showToast(res.error || 'Registration failed.', 'error');
@@ -75,9 +75,9 @@ export default function VendorRegisterPage() {
       {/* Hero Header */}
       <div className="border-b border-[#231b40] bg-gradient-to-b from-[#19102f] via-[#100d24] to-[#080711]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center space-y-4">
-          <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 px-3.5 py-1 rounded-full text-xs font-bold tracking-wide shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+          <div className="inline-flex items-center gap-2 bg-[#FF007A]/15 border border-[#FF007A]/30 text-[#FF007A] px-3.5 py-1 rounded-full text-xs font-bold tracking-wide">
             <Megaphone className="w-3.5 h-3.5" />
-            DRAMABOX BRAND SPONSORSHIP & VENDOR PORTAL
+            YARROWPLAY BRAND SPONSORSHIP & VENDOR PORTAL
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white max-w-3xl mx-auto leading-tight">

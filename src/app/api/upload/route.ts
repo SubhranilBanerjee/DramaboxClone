@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
-    const folder = (formData.get('folder') as string) || 'dramabox/videos';
+    const folder = (formData.get('folder') as string) || 'yarrowplay/videos';
     const resourceType = (formData.get('resource_type') as 'video' | 'image' | 'auto') || 'video';
 
     if (!file) {
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
 
       // Resilient local fallback: if Cloudinary account needs specific cloud name or network issue occurs,
       // return structured media object so creator upload flow in the UI never halts.
-      const mockPublicId = `dramabox_reel_${Date.now()}`;
+      const mockPublicId = `yarrowplay_reel_${Date.now()}`;
       return NextResponse.json({
         success: true,
         provider: 'cloudinary_simulated',

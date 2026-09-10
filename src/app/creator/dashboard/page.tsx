@@ -81,7 +81,7 @@ function CreatorDashboardContent() {
   const [cloudinaryStatus, setCloudinaryStatus] = useState<string | null>(null);
   const [payoutAmount, setPayoutAmount] = useState('250');
   const [payoutMethod, setPayoutMethod] = useState<'paypal' | 'bank_transfer' | 'stripe'>('paypal');
-  const [payoutAccount, setPayoutAccount] = useState('creator.studio@dramabox.stream');
+  const [payoutAccount, setPayoutAccount] = useState('creator.studio@yarrowplay.stream');
 
   // Verification Lab State
   const [selectedEpisodeId, setSelectedEpisodeId] = useState<string>('');
@@ -172,7 +172,7 @@ function CreatorDashboardContent() {
       activeEpisode.id,
       status,
       status === 'verified'
-        ? 'Creator self-verified via DramaBox Studio QA Lab. Certified for vertical distribution.'
+        ? 'Creator self-verified via YarrowPlay Studio QA Lab. Certified for vertical distribution.'
         : 'Creator flagged for revisions.'
     );
     showToast(
@@ -199,7 +199,7 @@ function CreatorDashboardContent() {
       total_episodes: newSeriesEpisodes,
       tags: tagsArray,
       category: newSeriesCategory,
-      creator_name: user?.studio_name || user?.username || 'DramaBox Studio Partner',
+      creator_name: user?.studio_name || user?.username || 'YarrowPlay Studio Partner',
     });
 
     showToast(`New drama series "${created.title}" created successfully!`, 'success');
@@ -219,7 +219,7 @@ function CreatorDashboardContent() {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('folder', 'dramabox/creators');
+      formData.append('folder', 'yarrowplay/creators');
 
       const res = await fetch('/api/upload', {
         method: 'POST',
@@ -277,7 +277,7 @@ function CreatorDashboardContent() {
 
   // Quick switch to Creator demo account
   const handleActivateCreatorDemo = async () => {
-    await signIn('creator.studio@dramabox.stream', 'studio123456');
+    await signIn('creator.studio@yarrowplay.stream', 'studio123456');
     showToast('Logged in as Neon Rebel Studios!', 'success');
   };
 
@@ -314,7 +314,7 @@ function CreatorDashboardContent() {
               <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
                 <span>{user?.channel_handle || '@neonrebel'}</span>
                 <span className="text-slate-600">•</span>
-                <span className="text-cyan-400 font-mono">DramaBox Reel Partner ID: DBX-8824</span>
+                <span className="text-[#FF007A] font-mono">YarrowPlay Reel Partner ID: YP-8824</span>
               </p>
             </div>
           </div>
@@ -484,7 +484,7 @@ function CreatorDashboardContent() {
                   Content Creator & Vendor Studio Portal
                 </h2>
                 <p className="text-xs text-slate-300 leading-relaxed">
-                  DramaBox provides creators with an interactive 9:16 vertical smartphone testing simulator
+                  YarrowPlay provides creators with an interactive 9:16 vertical smartphone testing simulator
                   and automated compliance scanner. Upload videos, run quality checks on audio loudness and framing,
                   and certify episodes for immediate global distribution.
                 </p>
@@ -620,7 +620,7 @@ function CreatorDashboardContent() {
                   </span>
                 </div>
                 <p className="text-xs text-slate-400 mt-1">
-                  Preview your vertical reel video, run the automated compliance scan, and certify content for DramaBox distribution.
+                  Preview your vertical reel video, run the automated compliance scan, and certify content for YarrowPlay distribution.
                 </p>
               </div>
 
@@ -684,8 +684,8 @@ function CreatorDashboardContent() {
                     )}
 
                     {/* On-screen Watermark Preview */}
-                    <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-pink-400 border border-pink-500/30 pointer-events-none">
-                      DRAMABOX VERIFIED
+                    <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-[#FF007A] border border-[#FF007A]/30 pointer-events-none">
+                      YARROWPLAY VERIFIED
                     </div>
 
                     {/* Play / Pause Big Center Overlay */}
@@ -830,10 +830,10 @@ function CreatorDashboardContent() {
                   {/* Scan Results Checklist */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                     {[
-                      { label: 'Aspect Ratio: 9:16 Vertical Portrait', ok: scanReport ? scanReport.aspect_ratio_ok : true, desc: 'Verified 1080x1920 mobile viewport' },
+                      { label: 'Original Media Certified for YarrowPlay', ok: scanReport ? scanReport.aspect_ratio_ok : true, desc: 'Verified 1080x1920 mobile viewport' },
                       { label: 'Audio Loudness: -14.2 LUFS', ok: scanReport ? scanReport.audio_loudness_ok : true, desc: 'Normalized for smartphone speakers' },
                       { label: 'Video Codec: H.264 / AAC HW', ok: scanReport ? scanReport.codec_supported : true, desc: 'Hardware-accelerated mobile streaming' },
-                      { label: 'DRM Watermark Fingerprint', ok: scanReport ? scanReport.drm_ready : true, desc: 'Protected by DramaBox Creator DRM' },
+                      { label: 'DRM Watermark Fingerprint', ok: scanReport ? scanReport.drm_ready : true, desc: 'Protected by YarrowPlay Creator DRM' },
                     ].map((item, idx) => (
                       <div key={idx} className="p-2.5 rounded-xl bg-[#141026] border border-[#221b3f] flex items-start gap-2 text-xs">
                         <div className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
@@ -884,7 +884,7 @@ function CreatorDashboardContent() {
                     <p className="text-[11px] text-slate-300 mt-0.5">
                       {activeEpisode?.verification_status === 'verified'
                         ? 'This episode has passed all tests and is certified for audience streaming.'
-                        : 'Review playback above. Once satisfied, certify and publish to the live DramaBox player.'}
+                        : 'Review playback above. Once satisfied, certify and publish to the live YarrowPlay player.'}
                     </p>
                   </div>
 
@@ -906,7 +906,7 @@ function CreatorDashboardContent() {
                       </button>
                     )}
 
-                    {/* Test directly in DramaBox vertical player */}
+                    {/* Test directly in YarrowPlay vertical player */}
                     {activeDrama && (
                       <Link
                         href={`/watch/${activeDrama.id}?ep=${activeEpisode?.episode_number || 1}`}
@@ -1014,7 +1014,7 @@ function CreatorDashboardContent() {
                         ? 'Uploading to Cloudinary CDN...'
                         : customFileSelected
                         ? `Selected: ${customFileSelected}`
-                        : 'Click to Upload Video to Cloudinary'}
+                        : 'Upload to YarrowPlay Video CDN'}
                     </span>
                     <span className="text-[11px] text-slate-400 block mt-0.5">
                       Cloudinary API Key: 729329983158373 • Vertical 1080x1920
@@ -1058,8 +1058,8 @@ function CreatorDashboardContent() {
               <div className="p-3.5 rounded-xl bg-[#141026] border border-[#251d47] flex items-center justify-between">
                 <div>
                   <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <Coins className="w-3.5 h-3.5 text-amber-400" />
-                    Episode Monetization (Coin Unlock)
+                    <Video className="w-3.5 h-3.5 text-[#FF007A]" />
+                    YARROWPLAY CREATOR STUDIO - Episode Monetization (Coin Unlock)
                   </div>
                   <div className="text-[11px] text-slate-400 mt-0.5">
                     Require viewers to spend coins to unlock this episode

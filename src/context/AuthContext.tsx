@@ -44,13 +44,13 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const LOCAL_STORAGE_USER_KEY = 'dramabox_auth_user';
-const LOCAL_STORAGE_USERS_DB = 'dramabox_registered_users';
+const LOCAL_STORAGE_USER_KEY = 'yarrowplay_auth_user';
+const LOCAL_STORAGE_USERS_DB = 'yarrowplay_registered_users';
 
 // Hardcoded Admin Credentials
 export const ADMIN_CREDENTIALS = {
-  email: process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'admin@dramabox.stream',
-  password: process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'Admin@DramaBox2026!',
+  email: process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'admin@yarrowplay.stream',
+  password: process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'Admin@YarrowPlay2026!',
 };
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -256,7 +256,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: ADMIN_CREDENTIALS.email,
         username: 'Chief Admin',
         role: 'admin',
-        studio_name: 'DramaBox Operations & Content Review',
+        studio_name: 'YarrowPlay Operations & Content Review',
         is_verified: true,
         created_at: new Date().toISOString(),
       };
@@ -320,7 +320,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         };
       } else {
         // Dynamic demo user detection based on email naming
-        const isDemoCreator = email.includes('creator') || email === 'creator.studio@dramabox.stream';
+        const isDemoCreator = email.includes('creator') || email === 'creator.studio@yarrowplay.stream';
         const isDemoAdvertiser = email.includes('advertiser') || email.includes('vendor') || email === 'partner@apexbrands.com';
         const isDemoAdmin = email.includes('admin');
 
@@ -332,7 +332,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         authenticatedUser = {
           id: isDemoCreator ? 'creator_demo_id' : isDemoAdvertiser ? 'advertiser_demo_id' : isDemoAdmin ? 'admin_demo_id' : 'user_' + Math.random().toString(36).substring(2, 12),
           email,
-          username: isDemoAdmin ? 'DramaBox Admin' : isDemoCreator ? 'Neon Rebel Studios' : isDemoAdvertiser ? 'Apex Global Media' : email.split('@')[0],
+          username: isDemoAdmin ? 'YarrowPlay Admin' : isDemoCreator ? 'Neon Rebel Studios' : isDemoAdvertiser ? 'Apex Global Media' : email.split('@')[0],
           role: detectedRole,
           studio_name: isDemoCreator ? 'Neon Rebel Studios' : undefined,
           channel_handle: isDemoCreator ? '@neonrebel' : undefined,

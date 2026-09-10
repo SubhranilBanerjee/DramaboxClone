@@ -90,9 +90,9 @@ export default function BlogPage() {
       content: content.trim(),
       category: category,
       cover_image: coverImage,
-      tags: tags.length > 0 ? tags : ['DramaBox'],
+      tags: tags.length > 0 ? tags : ['YarrowPlay'],
       author_id: user.id,
-      author_name: user.username || 'DramaBox Contributor',
+      author_name: user.username || 'YarrowPlay Contributor',
       author_role: user.role || 'viewer',
     });
 
@@ -155,9 +155,9 @@ export default function BlogPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-2 bg-pink-500/10 border border-pink-500/40 px-3 py-1 rounded-full text-xs font-semibold text-pink-300 shadow-[0_0_12px_rgba(255,42,141,0.25)]">
-                <BookOpen className="w-3.5 h-3.5 text-pink-400" />
-                DRAMABOX EDITORIAL & CREATOR STORIES
+              <div className="inline-flex items-center gap-2 bg-[#FF007A]/15 border border-[#FF007A]/30 px-3 py-1 rounded-full text-xs font-semibold text-[#FF007A]">
+                <BookOpen className="w-3.5 h-3.5 text-[#FF007A]" />
+                YARROWPLAY EDITORIAL & CREATOR STORIES
               </div>
               <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white uppercase">
                 The Vertical <span className="neon-text-pink">Cinema Gazette</span>

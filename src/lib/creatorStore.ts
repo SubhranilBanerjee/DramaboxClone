@@ -12,11 +12,11 @@ import {
 } from './types';
 
 const STORAGE_KEYS = {
-  CREATOR_DRAMAS: 'dramabox_creator_dramas',
-  CREATOR_EPISODES: 'dramabox_creator_episodes',
-  VERIFICATION_REPORTS: 'dramabox_video_verification_reports',
-  EPISODE_ANALYTICS: 'dramabox_episode_analytics',
-  CREATOR_MONETIZATION: 'dramabox_creator_monetization',
+  CREATOR_DRAMAS: 'yarrowplay_creator_dramas',
+  CREATOR_EPISODES: 'yarrowplay_creator_episodes',
+  VERIFICATION_REPORTS: 'yarrowplay_video_verification_reports',
+  EPISODE_ANALYTICS: 'yarrowplay_episode_analytics',
+  CREATOR_MONETIZATION: 'yarrowplay_creator_monetization',
 };
 
 // Event bus to keep creator UI and admin UI synchronized in real-time
@@ -241,7 +241,7 @@ export function createCreatorDrama(data: {
     views: '0',
     rating: 9.9,
     creator_id: data.creator_id || 'creator_user',
-    creator_name: data.creator_name || 'DramaBox Verified Studio',
+    creator_name: data.creator_name || 'YarrowPlay Verified Studio',
     status: 'pending_approval', // Goes directly to admin dashboard
     created_at: new Date().toISOString(),
     episodes_count: 0,
@@ -317,7 +317,7 @@ export function approveDrama(dramaId: string): boolean {
     if (ep.drama_id === dramaId && ep.verification_status !== 'rejected') {
       ep.verification_status = 'verified';
       ep.verified_at = new Date().toISOString();
-      ep.verification_notes = 'Approved by Administrator. Live on DramaBox.';
+      ep.verification_notes = 'Approved by Administrator. Live on YarrowPlay.';
     }
   });
   saveCreatorEpisodes(episodes);
@@ -583,7 +583,7 @@ export const STANDARD_CREATOR_QA_CHECKLIST: VideoQAItem[] = [
   {
     id: 'originality',
     label: 'Original & Authorized Media',
-    description: 'I confirm this video is original content or properly licensed by our studio for DramaBox distribution.',
+    description: 'I confirm this video is original content or properly licensed by our studio for YarrowPlay distribution.',
     passed: true,
     required: true,
   },

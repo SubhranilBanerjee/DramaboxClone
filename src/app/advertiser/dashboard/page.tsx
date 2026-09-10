@@ -127,7 +127,7 @@ export default function AdvertiserDashboardPage() {
                 <span className="text-amber-400">Campaign Manager</span>
               </h1>
               <p className="text-xs sm:text-sm text-slate-400 max-w-xl">
-                Track full-screen vertical impressions, click-through rates, and targeted category sponsorships across DramaBox releases.
+                Track full-screen vertical impressions, click-through rates, and targeted category sponsorships across YarrowPlay releases.
               </p>
             </div>
 
@@ -258,9 +258,9 @@ export default function AdvertiserDashboardPage() {
             <span className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
               <Smartphone className="w-4 h-4" /> Native Vertical Mobile Experience
             </span>
-            <h3 className="text-lg font-black text-white">How Your Ads Look on DramaBox</h3>
+            <h3 className="text-lg font-black text-white">How Your Ads Look on YarrowPlay</h3>
             <p className="text-xs text-slate-400 max-w-lg leading-relaxed">
-              DramaBox native vertical sponsorships appear as seamless 9:16 high-definition reels during cliffhanger transitions, with interactive call-to-action cards directly below the video frame.
+              YarrowPlay native vertical sponsorships appear as seamless 9:16 high-definition reels during cliffhanger transitions, with interactive call-to-action cards directly below the video frame.
             </p>
           </div>
 

@@ -55,36 +55,33 @@ export const Navbar = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-[#0c0a18]/90 backdrop-blur-md border-b border-[#221c3d]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <header className="sticky top-0 z-40 bg-[#070707]/90 backdrop-blur-md border-b border-[#292929]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-3">
           {/* Logo & Brand */}
-          <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="flex items-center gap-6 sm:gap-8">
+            <Link href="/" className="flex items-center gap-2 group">
               <img
-                src="/logo.jpg"
-                alt="DramaBox"
-                className="w-8 h-8 rounded-lg object-cover shadow-[0_0_14px_rgba(168,85,247,0.7)]"
+                src="/logo.png"
+                alt="YarrowPlay"
+                className="w-7 h-7 sm:w-8 sm:h-8 object-contain transition-transform group-hover:scale-105"
               />
-              <span className="font-extrabold text-lg tracking-wider text-white uppercase flex items-center">
-                DRAMA
-                <span className="font-black ml-1 tracking-widest" style={{ color: '#a855f7', textShadow: '0 0 14px #a855f7' }}>
-                  BOX
-                </span>
+              <span className="font-extrabold text-base sm:text-lg tracking-wider text-white uppercase flex items-center">
+                YARROW<span className="text-[#FF007A] ml-0.5">PLAY</span>
               </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-6">
+            <nav className="hidden md:flex items-center gap-5">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`text-sm font-medium transition-all ${
+                    className={`text-xs font-semibold tracking-wide transition-all ${
                       isActive
-                        ? 'neon-text-cyan font-semibold drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]'
-                        : 'text-slate-400 hover:text-pink-400 hover:drop-shadow-[0_0_6px_rgba(255,42,141,0.6)]'
+                        ? 'text-[#FF007A] font-bold'
+                        : 'text-[#8F8F98] hover:text-white'
                     }`}
                   >
                     {link.label}
@@ -95,46 +92,45 @@ export const Navbar = () => {
           </div>
 
           {/* Right Action Items */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Search Pill */}
-            <div className="hidden lg:flex items-center gap-2 bg-[#131127] border border-[#262046] rounded-full px-3.5 py-1.5 text-xs text-slate-300 focus-within:border-cyan-400 focus-within:shadow-[0_0_12px_rgba(0,240,255,0.3)] transition-all">
-              <Search className="w-3.5 h-3.5 text-cyan-400" />
+            <div className="hidden lg:flex items-center gap-2 bg-[#151515] border border-[#292929] rounded-full px-3 py-1.5 text-xs text-[#8F8F98] focus-within:border-[#FF007A] focus-within:shadow-[0_0_12px_rgba(255,0,122,0.25)] transition-all">
+              <Search className="w-3.5 h-3.5 text-[#8F8F98]" />
               <input
                 type="text"
                 placeholder="Search dramas, actors..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent border-none outline-none text-xs text-white w-32 xl:w-44 placeholder-slate-500"
+                className="bg-transparent border-none outline-none text-xs text-white w-28 xl:w-40 placeholder-[#62626E]"
               />
             </div>
 
-            {/* Neon Coin Balance Pill Button */}
+            {/* Coin Balance Pill Button */}
             <button
               onClick={() => setIsTopUpOpen(true)}
-              className="flex items-center gap-1.5 bg-[#141126] hover:bg-[#1a1633] border border-cyan-500/40 hover:border-cyan-400 hover:shadow-[0_0_12px_rgba(0,240,255,0.35)] text-slate-100 px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
+              className="flex items-center gap-1.5 bg-[#151515] hover:bg-[#1c1c1c] border border-[#292929] hover:border-[#FF007A] text-white px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
               title="Click to manage coins"
             >
-              <Coins className="w-3.5 h-3.5 text-amber-400 shrink-0 filter drop-shadow-[0_0_4px_rgba(251,191,36,0.6)]" />
-              <span className="neon-text-cyan font-bold">{balance}</span>
-              <span className="hidden sm:inline text-slate-400 font-normal">Coins</span>
-              <div className="w-4 h-4 rounded-full bg-cyan-950 border border-cyan-500/50 flex items-center justify-center ml-0.5 text-cyan-300">
+              <Coins className="w-3.5 h-3.5 text-[#FFC400] shrink-0" />
+              <span className="text-[#FF007A] font-bold">{balance}</span>
+              <span className="hidden sm:inline text-[#8F8F98] font-normal">Coins</span>
+              <div className="w-4 h-4 rounded-full bg-[#241018] border border-[#FF007A]/50 flex items-center justify-center ml-0.5 text-[#FF007A]">
                 <Plus className="w-2.5 h-2.5" />
               </div>
             </button>
 
-            {/* AUTH / PROFILE SECTION */}
+            {/* User Profile / Dashboard dropdown */}
             {user ? (
-              /* Logged In User Dropdown */
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 p-1 pl-2.5 pr-2 rounded-full border border-pink-500/40 hover:border-pink-400 hover:shadow-[0_0_12px_rgba(255,42,141,0.35)] transition-all bg-[#141026] text-xs font-semibold text-white"
+                  className="flex items-center gap-1.5 bg-[#151515] hover:bg-[#1c1c1c] border border-[#292929] hover:border-[#FF007A] px-2.5 py-1.5 rounded-full text-xs font-semibold text-white transition-all"
                 >
-                  <span className="max-w-[90px] truncate text-slate-200">{user.username}</span>
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white flex items-center justify-center text-[10px] font-bold shadow-[0_0_8px_rgba(255,42,141,0.5)]">
+                  <div className="w-5 h-5 rounded-full bg-[#FF007A] text-white font-bold flex items-center justify-center text-[10px]">
                     {user.username.charAt(0).toUpperCase()}
                   </div>
-                  <ChevronDown className="w-3 h-3 text-slate-400" />
+                  <span className="hidden sm:inline max-w-[90px] truncate">{user.username}</span>
+                  <ChevronDown className="w-3 h-3 text-[#8F8F98]" />
                 </button>
 
                 {isUserMenuOpen && (
@@ -143,68 +139,69 @@ export const Navbar = () => {
                       className="fixed inset-0 z-40"
                       onClick={() => setIsUserMenuOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-52 bg-[#100e21] border border-[#2f2756] rounded-xl shadow-[0_0_25px_rgba(0,0,0,0.8)] p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                      <div className="px-3 py-2 border-b border-[#231d42]">
-                        <div className="flex items-center justify-between">
-                          <p className="text-xs font-bold text-white truncate">{user.username}</p>
-                          <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-pink-500/20 text-pink-300 border border-pink-500/30">
-                            {user.role}
-                          </span>
+                    <div className="absolute right-0 mt-2 w-52 bg-[#151515] border border-[#292929] rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.8)] py-1.5 z-50 text-xs text-white">
+                      <div className="px-3 py-2 border-b border-[#292929]">
+                        <p className="font-bold truncate text-white">{user.username}</p>
+                        <p className="text-[10px] text-[#8F8F98] truncate">{user.email}</p>
+                        <div className="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#FF007A]/15 text-[#FF007A] border border-[#FF007A]/30 capitalize">
+                          {user.role}
                         </div>
-                        <p className="text-[11px] text-slate-400 truncate mt-0.5">{user.email}</p>
                       </div>
 
-                      {/* Role Specific Quick Dashboard Link */}
-                      {user.role === 'admin' ? (
+                      {user.role === 'admin' && (
                         <Link
                           href="/admin"
                           onClick={() => setIsUserMenuOpen(false)}
-                          className="flex items-center gap-2 px-3 py-2 text-xs text-purple-300 hover:bg-purple-950/40 rounded-lg font-bold transition-colors"
+                          className="flex items-center gap-2 px-3 py-2 hover:bg-[#1f1f1f] text-white font-medium"
                         >
-                          <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
-                          Admin Moderation Portal
+                          <ShieldCheck className="w-3.5 h-3.5 text-[#FF007A]" />
+                          Admin QA Panel
                         </Link>
-                      ) : user.role === 'creator' ? (
+                      )}
+
+                      {user.role === 'creator' && (
                         <Link
                           href="/creator/dashboard"
                           onClick={() => setIsUserMenuOpen(false)}
-                          className="flex items-center gap-2 px-3 py-2 text-xs text-pink-300 hover:bg-pink-950/40 rounded-lg font-bold transition-colors"
+                          className="flex items-center gap-2 px-3 py-2 hover:bg-[#1f1f1f] text-white font-medium"
                         >
-                          <Sparkles className="w-3.5 h-3.5 text-pink-400" />
-                          Creator Studio & Analytics
+                          <Sparkles className="w-3.5 h-3.5 text-[#FF007A]" />
+                          Creator Studio
                         </Link>
-                      ) : user.role === 'advertiser' ? (
+                      )}
+
+                      {user.role === 'advertiser' && (
                         <Link
                           href="/advertiser/dashboard"
                           onClick={() => setIsUserMenuOpen(false)}
-                          className="flex items-center gap-2 px-3 py-2 text-xs text-amber-300 hover:bg-amber-950/40 rounded-lg font-bold transition-colors"
+                          className="flex items-center gap-2 px-3 py-2 hover:bg-[#1f1f1f] text-white font-medium"
                         >
-                          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                          Advertiser Campaign Portal
-                        </Link>
-                      ) : (
-                        <Link
-                          href="/viewer/dashboard"
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className="flex items-center gap-2 px-3 py-2 text-xs text-cyan-300 hover:bg-cyan-950/40 rounded-lg font-bold transition-colors"
-                        >
-                          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                          My Viewer Dashboard
+                          <Sparkles className="w-3.5 h-3.5 text-[#FF007A]" />
+                          Advertiser Hub
                         </Link>
                       )}
 
                       <Link
+                        href="/viewer/dashboard"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-2 px-3 py-2 hover:bg-[#1f1f1f] text-white font-medium"
+                      >
+                        <User className="w-3.5 h-3.5 text-[#8F8F98]" />
+                        Viewer Dashboard
+                      </Link>
+
+                      <Link
                         href="/profile"
                         onClick={() => setIsUserMenuOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:text-white hover:bg-[#1a1636] rounded-lg font-medium transition-colors"
+                        className="flex items-center gap-2 px-3 py-2 hover:bg-[#1f1f1f] text-white font-medium"
                       >
-                        <User className="w-3.5 h-3.5 text-cyan-400" />
+                        <User className="w-3.5 h-3.5 text-[#8F8F98]" />
                         My Profile & Wallet
                       </Link>
 
                       <button
                         onClick={handleSignOut}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-400 hover:bg-rose-950/40 rounded-lg font-medium transition-colors text-left border-t border-[#1f1a38] mt-1"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-400 hover:bg-rose-950/40 rounded-lg font-medium transition-colors text-left border-t border-[#292929] mt-1"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         Sign Out
@@ -221,7 +218,7 @@ export const Navbar = () => {
                     setAuthMode('login');
                     setIsAuthOpen(true);
                   }}
-                  className="text-xs font-semibold text-slate-300 hover:text-white px-3 py-1.5 transition-colors"
+                  className="text-xs font-semibold text-[#8F8F98] hover:text-white px-2.5 py-1.5 transition-colors"
                 >
                   Sign In
                 </button>
@@ -230,9 +227,9 @@ export const Navbar = () => {
                     setAuthMode('register');
                     setIsAuthOpen(true);
                   }}
-                  className="bg-gradient-to-r from-pink-600 via-fuchsia-600 to-purple-600 text-white px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all shadow-[0_0_12px_rgba(255,42,141,0.5)] hover:shadow-[0_0_20px_rgba(255,42,141,0.8)] hover:scale-105 flex items-center gap-1"
+                  className="bg-[#FF007A] hover:bg-[#E6006E] text-white px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-[0_2px_12px_rgba(255,0,122,0.35)] hover:scale-105 flex items-center gap-1"
                 >
-                  <Sparkles className="w-3 h-3 text-cyan-300" />
+                  <Sparkles className="w-3 h-3 text-white" />
                   <span>Register</span>
                 </button>
               </div>
@@ -248,65 +245,65 @@ export const Navbar = () => {
         defaultMode={authMode}
       />
 
-      {/* Coin Top-up / Claim Modal (Neon Dark Edition) */}
+      {/* Coin Top-up / Claim Modal */}
       {isTopUpOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="relative w-full max-w-sm bg-[#0e0c1c] border border-[#2d2554] rounded-2xl p-6 shadow-[0_0_35px_rgba(255,42,141,0.2)]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="relative w-full max-w-sm bg-[#151515] border border-[#292929] rounded-2xl p-5 sm:p-6 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
             <button
               onClick={() => setIsTopUpOpen(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
+              className="absolute top-4 right-4 text-[#8F8F98] hover:text-white p-1"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
 
             <div className="text-center mb-5">
-              <div className="w-12 h-12 rounded-full bg-pink-500/10 border border-pink-500/40 flex items-center justify-center mx-auto mb-3 text-pink-400 shadow-[0_0_15px_rgba(255,42,141,0.3)]">
-                <Coins className="w-6 h-6" />
+              <div className="w-10 h-10 rounded-full bg-[#FF007A]/15 border border-[#FF007A]/40 flex items-center justify-center mx-auto mb-2.5 text-[#FF007A]">
+                <Coins className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-bold text-white tracking-wide">
-                DRAMABOX <span className="neon-text-pink">COIN STORE</span>
+              <h3 className="text-sm sm:text-base font-bold text-white tracking-wide uppercase">
+                YARROWPLAY <span className="text-[#FF007A]">COIN STORE</span>
               </h3>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-[#8F8F98] mt-1">
                 Your current balance:{' '}
-                <strong className="neon-text-cyan font-bold">{balance} Coins</strong>
+                <strong className="text-[#FF007A] font-bold">{balance} Coins</strong>
               </p>
             </div>
 
-            <div className="space-y-2.5 mb-5">
+            <div className="space-y-2 mb-4">
               {/* Daily Free Coins */}
-              <div className="border border-cyan-500/30 bg-[#091522] rounded-xl p-3 flex items-center justify-between shadow-[0_0_12px_rgba(0,240,255,0.15)]">
+              <div className="border border-[#292929] bg-[#191919] rounded-xl p-3 flex items-center justify-between">
                 <div>
-                  <div className="text-xs font-semibold text-cyan-300 flex items-center gap-1">
-                    <Sparkles className="w-3.5 h-3.5 text-cyan-400" /> Daily Check-in
+                  <div className="text-xs font-semibold text-white flex items-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5 text-[#FF007A]" /> Daily Check-in
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">+50 Coins for free</div>
+                  <div className="text-[11px] text-[#8F8F98] mt-0.5">+50 Coins for free</div>
                 </div>
                 <button
                   onClick={() => handleClaimBonus(50)}
-                  className="text-xs font-semibold bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-3 py-1.5 rounded-lg transition-all shadow-[0_0_10px_rgba(0,240,255,0.4)]"
+                  className="text-xs font-bold bg-[#FF007A] hover:bg-[#E6006E] text-white px-3 py-1.5 rounded-lg transition-all shadow-[0_2px_10px_rgba(255,0,122,0.3)]"
                 >
                   Claim Free
                 </button>
               </div>
 
               {/* Tier 1 */}
-              <div className="border border-[#262046] bg-[#121024] rounded-xl p-3 flex items-center justify-between hover:border-pink-500/50 transition-colors">
+              <div className="border border-[#292929] bg-[#191919] rounded-xl p-3 flex items-center justify-between hover:border-[#FF007A]/50 transition-colors">
                 <div>
                   <div className="text-xs font-semibold text-white">100 Coins</div>
-                  <div className="text-[11px] text-slate-400">Unlock 5 premium episodes</div>
+                  <div className="text-[11px] text-[#8F8F98]">Unlock 5 premium episodes</div>
                 </div>
                 <button
                   onClick={() => handleClaimBonus(100)}
-                  className="text-xs font-semibold bg-[#221c3d] hover:bg-pink-600 text-white px-3 py-1.5 rounded-lg transition-all hover:shadow-[0_0_10px_rgba(255,42,141,0.5)]"
+                  className="text-xs font-bold bg-[#262626] hover:bg-[#FF007A] text-white px-3 py-1.5 rounded-lg transition-all"
                 >
                   $0.99
                 </button>
               </div>
 
               {/* Tier 2 */}
-              <div className="border border-pink-500/60 bg-[#16122d] rounded-xl p-3 flex items-center justify-between relative shadow-[0_0_18px_rgba(255,42,141,0.2)]">
-                <div className="absolute -top-2 right-3 bg-pink-500 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shadow-[0_0_8px_rgba(255,42,141,0.6)]">
-                  Most Popular
+              <div className="border border-[#FF007A]/60 bg-[#221019] rounded-xl p-3 flex items-center justify-between relative shadow-[0_0_15px_rgba(255,0,122,0.15)]">
+                <div className="absolute -top-2 right-3 bg-[#FF007A] text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                  Popular
                 </div>
                 <div>
                   <div className="text-xs font-semibold text-white">350 Coins</div>
@@ -314,29 +311,29 @@ export const Navbar = () => {
                 </div>
                 <button
                   onClick={() => handleClaimBonus(350)}
-                  className="text-xs font-semibold bg-gradient-to-r from-pink-600 to-purple-600 text-white px-3 py-1.5 rounded-lg shadow-[0_0_12px_rgba(255,42,141,0.5)] hover:scale-105 transition-all"
+                  className="text-xs font-bold bg-[#FF007A] hover:bg-[#E6006E] text-white px-3 py-1.5 rounded-lg shadow-[0_2px_10px_rgba(255,0,122,0.35)] transition-all"
                 >
                   $2.99
                 </button>
               </div>
 
               {/* Tier 3 */}
-              <div className="border border-[#262046] bg-[#121024] rounded-xl p-3 flex items-center justify-between hover:border-cyan-500/50 transition-colors">
+              <div className="border border-[#292929] bg-[#191919] rounded-xl p-3 flex items-center justify-between hover:border-[#FF007A]/50 transition-colors">
                 <div>
                   <div className="text-xs font-semibold text-white">1000 Coins</div>
-                  <div className="text-[11px] text-slate-400">Unlock multiple full dramas</div>
+                  <div className="text-[11px] text-[#8F8F98]">Unlock multiple full series</div>
                 </div>
                 <button
                   onClick={() => handleClaimBonus(1000)}
-                  className="text-xs font-semibold bg-[#221c3d] hover:bg-cyan-600 text-white px-3 py-1.5 rounded-lg transition-all hover:shadow-[0_0_10px_rgba(0,240,255,0.5)]"
+                  className="text-xs font-bold bg-[#262626] hover:bg-[#FF007A] text-white px-3 py-1.5 rounded-lg transition-all"
                 >
                   $6.99
                 </button>
               </div>
             </div>
 
-            <p className="text-[11px] text-slate-500 text-center">
-              (Mock payment sandbox: instant neon coin delivery)
+            <p className="text-[10px] text-[#8F8F98] text-center">
+              (Instant YarrowPlay coin delivery)
             </p>
           </div>
         </div>

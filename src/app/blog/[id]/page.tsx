@@ -191,18 +191,18 @@ export default function BlogDetailPage() {
         </div>
 
         {/* Bottom CTA Card */}
-        <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#170e2b] to-[#0f142b] border border-[#31235e] flex flex-col sm:flex-row items-center justify-between gap-6 shadow-[0_0_35px_rgba(168,85,247,0.2)]">
+        <div className="mt-10 p-5 sm:p-7 rounded-2xl bg-[#151515] border border-[#292929] flex flex-col sm:flex-row items-center justify-between gap-5">
           <div className="space-y-1 text-center sm:text-left">
-            <h3 className="text-base font-bold text-white flex items-center gap-2 justify-center sm:justify-start">
-              <Sparkles className="w-4 h-4 text-pink-400" /> Have a story or analysis to share?
+            <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2 justify-center sm:justify-start">
+              <Sparkles className="w-4 h-4 text-[#FF007A]" /> Have a story or analysis to share?
             </h3>
-            <p className="text-xs text-slate-400">
-              Join thousands of vertical filmmakers and screenwriters contributing to DramaBox.
+            <p className="text-xs text-[#8F8F98]">
+              Join thousands of vertical filmmakers and screenwriters contributing to YarrowPlay.
             </p>
           </div>
           <Link
             href="/blog"
-            className="bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(255,42,141,0.5)] transition-all whitespace-nowrap"
+            className="bg-[#FF007A] hover:bg-[#E6006E] text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-[0_4px_16px_rgba(255,0,122,0.35)] transition-all whitespace-nowrap"
           >
             Write a Story
           </Link>

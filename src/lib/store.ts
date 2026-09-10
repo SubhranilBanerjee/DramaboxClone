@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
 
 const STORAGE_KEYS = {
-  COIN_BALANCE: 'dramabox_coin_balance',
-  UNLOCKED_EPISODES: 'dramabox_unlocked_episodes',
-  LIKED_EPISODES: 'dramabox_liked_episodes',
-  BOOKMARKS: 'dramabox_bookmarked_dramas',
-  USER_ID: 'dramabox_anonymous_user_id',
+  COIN_BALANCE: 'yarrowplay_coin_balance',
+  UNLOCKED_EPISODES: 'yarrowplay_unlocked_episodes',
+  LIKED_EPISODES: 'yarrowplay_liked_episodes',
+  BOOKMARKS: 'yarrowplay_bookmarked_dramas',
+  USER_ID: 'yarrowplay_anonymous_user_id',
 };
 
 // Event bus for syncing state across components

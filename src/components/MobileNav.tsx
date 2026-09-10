@@ -37,7 +37,7 @@ export const MobileNav = () => {
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0c0a18]/95 backdrop-blur-md border-t border-[#221c3d] flex items-center justify-around h-14 px-2">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#070707]/95 backdrop-blur-md border-t border-[#292929] flex items-center justify-around h-13 px-2">
       {items.map((item) => {
         const Icon = item.icon;
         const isActive = pathname === item.href;
@@ -47,8 +47,8 @@ export const MobileNav = () => {
             href={item.href}
             className={`flex flex-col items-center justify-center gap-0.5 w-14 py-1 transition-all ${
               isActive
-                ? 'text-pink-400 font-bold drop-shadow-[0_0_8px_rgba(255,42,141,0.8)]'
-                : 'text-slate-500 hover:text-slate-300'
+                ? 'text-[#FF007A] font-bold'
+                : 'text-[#8F8F98] hover:text-white'
             }`}
           >
             <Icon className="w-4 h-4" />

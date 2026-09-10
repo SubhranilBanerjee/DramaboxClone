@@ -20,7 +20,7 @@ export interface BlogPost {
   created_at: string;
 }
 
-const STORAGE_KEY = 'dramabox_blogs';
+const STORAGE_KEY = 'yarrowplay_blogs';
 
 const INITIAL_BLOGS: BlogPost[] = [
   {
@@ -38,7 +38,7 @@ When a viewer holds their smartphone in vertical orientation, the frame fills th
 2. **Dynamic Pacing**: Every vertical reel must trigger a high-stakes dramatic revelation within the first 3.5 seconds.
 3. **Audio Mastering**: Mobile phone stereo speakers necessitate dialogue normalization centered between -14 and -16 LUFS.
 
-At DramaBox, our Cloudinary-powered CDN pipeline encodes vertical reels in multi-bitrate H.264 / AV1 streams, ensuring instant playback on 5G mobile networks worldwide.`,
+At YarrowPlay, our Cloudinary-powered CDN pipeline encodes vertical reels in multi-bitrate H.264 / AV1 streams, ensuring instant playback on 5G mobile networks worldwide.`,
     cover_image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1200&q=80',
     category: 'Production Insights',
     tags: ['Cinematography', 'MobileStreaming', 'Innovation'],
@@ -66,7 +66,7 @@ Creators who implement this formula consistently report an 80%+ episode 1-to-2 c
     category: 'Creator Tips',
     tags: ['Screenwriting', 'Storytelling', 'Monetization'],
     author_id: 'admin_primary_id',
-    author_name: 'DramaBox Editorial Team',
+    author_name: 'YarrowPlay Editorial Team',
     author_role: 'admin',
     read_time: '3 min read',
     likes_count: 512,
@@ -79,7 +79,7 @@ Creators who implement this formula consistently report an 80%+ episode 1-to-2 c
     excerpt: 'How global brands are replacing traditional 30-second skippable ads with seamless product placements and branded vertical reel storylines.',
     content: `Consumer ad-blindness has made traditional pre-roll and mid-roll commercials obsolete. In contrast, branded storylines woven directly into vertical dramas yield a 4.8x higher brand recall rate.
 
-Through the new DramaBox Advertiser Vendor Portal, brands can sponsor specific genres—such as high-fashion romance or luxury automotive thrillers—ensuring direct exposure to millions of daily engaged streamers without interrupting the cinematic experience.`,
+Through the new YarrowPlay Advertiser Vendor Portal, brands can sponsor specific genres—such as high-fashion romance or luxury automotive thrillers—ensuring direct exposure to millions of daily engaged streamers without interrupting the cinematic experience.`,
     cover_image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80',
     category: 'Industry Trends',
     tags: ['Advertising', 'Brands', 'Sponsorship'],
@@ -151,7 +151,7 @@ export function createBlogPost(post: {
       post.cover_image ||
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80',
     category: post.category || 'Production Insights',
-    tags: post.tags && post.tags.length > 0 ? post.tags : ['DramaBox', 'Storytelling'],
+    tags: post.tags && post.tags.length > 0 ? post.tags : ['YarrowPlay', 'Storytelling'],
     author_id: post.author_id,
     author_name: post.author_name,
     author_role: post.author_role,
