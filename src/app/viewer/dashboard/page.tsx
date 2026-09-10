@@ -267,6 +267,9 @@ export default function ViewerDashboardPage() {
                     alt={drama.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
+                    decoding="async"
+                    width={160}
+                    height={240}
                   />
                   <div className="absolute top-1.5 right-1.5 bg-[#070707]/80 backdrop-blur-md rounded px-1.5 py-0.5 text-[9px] font-bold text-[#FFC400] flex items-center gap-1 border border-[#292929]">
                     <Star className="w-2.5 h-2.5 fill-[#FFC400]" /> {drama.rating || 9.8}

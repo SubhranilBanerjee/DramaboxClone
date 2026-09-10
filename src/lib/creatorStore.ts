@@ -34,7 +34,7 @@ const INITIAL_CREATOR_DRAMAS: CreatorDrama[] = [
     id: 'creator-series-neon-rebel',
     title: 'Cyber Heist: The Midnight Syndicate',
     description: 'A rogue neural hacker joins forces with a disavowed black-ops agent to extract confidential AI prototypes from Neo-Verona’s most fortified skyscraper.',
-    cover_image_url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
+    cover_image_url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=400&q=75',
     total_episodes: 12,
     tags: ['Cyberpunk', 'Action', 'Revenge', 'Heist'],
     category: 'suspense',
@@ -50,7 +50,7 @@ const INITIAL_CREATOR_DRAMAS: CreatorDrama[] = [
     id: 'creator-series-shadow-love',
     title: 'Whispers Across the Dynasty',
     description: 'An exiled court alchemist crafts an elixir capable of crossing dimensional timelines, catching the attention of the ruthless Crown Prince who demands her allegiance.',
-    cover_image_url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+    cover_image_url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=75',
     total_episodes: 18,
     tags: ['Historical', 'Romance', 'Fantasy', 'Time Travel'],
     category: 'romance',
@@ -167,12 +167,12 @@ export const SAMPLE_CREATOR_VERTICAL_VIDEOS = [
 ];
 
 export const SAMPLE_CREATOR_POSTERS = [
-  'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=400&q=75',
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=75',
+  'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=400&q=75',
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=75',
+  'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=75',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=75',
 ];
 
 // ----------------- STORAGE HELPERS -----------------

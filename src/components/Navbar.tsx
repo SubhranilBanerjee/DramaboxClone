@@ -14,10 +14,14 @@ import {
   ChevronDown,
   ShieldCheck
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { useCoinBalance } from '@/lib/store';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from './Toast';
-import { AuthModal } from './AuthModal';
+
+const AuthModal = dynamic(() => import('./AuthModal').then((mod) => mod.AuthModal), {
+  ssr: false,
+});
 
 export const Navbar = () => {
   const pathname = usePathname();

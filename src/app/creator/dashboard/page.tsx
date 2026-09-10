@@ -688,6 +688,7 @@ function CreatorDashboardContent() {
                       className="w-full h-full object-cover"
                       playsInline
                       loop
+                      preload="metadata"
                       muted={isMuted}
                       onPlay={() => setIsPlaying(true)}
                       onPause={() => setIsPlaying(false)}

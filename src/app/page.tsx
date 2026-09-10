@@ -11,10 +11,10 @@ import { useAuth } from '@/context/AuthContext';
 import { useBookmarks } from '@/lib/store';
 import { useToast } from '@/components/Toast';
 
-/* ─── Compact Horizontal Poster Row ─────────────────────────────────────── */
+/* ─── Compact Horizontal Poster Row (Memoized) ──────────────────────────── */
 interface PosterRowProps { title: string; dramas: Drama[]; emoji?: string; badge?: string }
 
-const PosterRow: React.FC<PosterRowProps> = ({ title, dramas, emoji, badge }) => {
+const PosterRow = React.memo<PosterRowProps>(({ title, dramas, emoji, badge }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const scroll = (dir: 'left' | 'right') =>
     scrollRef.current?.scrollBy({ left: dir === 'left' ? -360 : 360, behavior: 'smooth' });
@@ -64,6 +64,9 @@ const PosterRow: React.FC<PosterRowProps> = ({ title, dramas, emoji, badge }) =>
                 alt={drama.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
+                decoding="async"
+                width={170}
+                height={255}
               />
               {/* hover overlay */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
@@ -92,7 +95,9 @@ const PosterRow: React.FC<PosterRowProps> = ({ title, dramas, emoji, badge }) =>
       </div>
     </section>
   );
-};
+});
+
+PosterRow.displayName = 'PosterRow';
 
 /* ─── Main Home Page ─────────────────────────────────────────────────────── */
 export default function HomePage() {
@@ -117,19 +122,34 @@ export default function HomePage() {
     return () => window.removeEventListener('creator_dramas_changed', handleDramasChange);
   }, []);
 
-  const heroDramas = dramas.slice(0, 4);
-  const heroDrama = heroDramas[heroIndex] || dramas[0];
+  const heroDramas = React.useMemo(() => dramas.slice(0, 4), [dramas]);
+  const heroDrama = heroDramas[heroIndex] || heroDramas[0] || dramas[0];
 
   const isHeroBookmarked = heroDrama ? bookmarks.includes(heroDrama.id) : false;
 
-  const trendingDramas = dramas.filter(d => d.category === 'trending' || (d.rating ?? 0) >= 9.7);
-  const romanceDramas = dramas.filter(d => d.category === 'romance' || d.tags.includes('Romance'));
-  const revengeDramas = dramas.filter(d => d.category === 'revenge' || d.tags.includes('Revenge'));
-  const suspenseDramas = dramas.filter(d => d.category === 'suspense' || d.tags.includes('Suspense'));
-  const creatorApprovedDramas = dramas.filter(d => d.creator_id);
+  const trendingDramas = React.useMemo(
+    () => dramas.filter(d => d.category === 'trending' || (d.rating ?? 0) >= 9.7),
+    [dramas]
+  );
+  const romanceDramas = React.useMemo(
+    () => dramas.filter(d => d.category === 'romance' || d.tags.includes('Romance')),
+    [dramas]
+  );
+  const revengeDramas = React.useMemo(
+    () => dramas.filter(d => d.category === 'revenge' || d.tags.includes('Revenge')),
+    [dramas]
+  );
+  const suspenseDramas = React.useMemo(
+    () => dramas.filter(d => d.category === 'suspense' || d.tags.includes('Suspense')),
+    [dramas]
+  );
+  const creatorApprovedDramas = React.useMemo(
+    () => dramas.filter(d => d.creator_id),
+    [dramas]
+  );
 
   useEffect(() => {
-    if (heroDramas.length === 0) return;
+    if (heroDramas.length <= 1) return;
     const t = setInterval(() => setHeroIndex(i => (i + 1) % heroDramas.length), 7000);
     return () => clearInterval(t);
   }, [heroDramas.length]);
@@ -157,17 +177,23 @@ export default function HomePage() {
       {/* ══ COMPACT SLEEK HERO ════════════════════════════════════════════ */}
       <section className="relative w-full h-[76vh] min-h-[500px] max-h-[660px] overflow-hidden">
 
-        {/* Background images with crossfade */}
-        {heroDramas.map((drama, idx) => (
-          <div
-            key={drama.id}
-            className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
-            style={{
-              backgroundImage: `url(${drama.cover_image_url})`,
-              opacity: idx === heroIndex ? 1 : 0,
-            }}
-          />
-        ))}
+        {/* Background images with crossfade - only load current and adjacent slide */}
+        {heroDramas.map((drama, idx) => {
+          const isCurrent = idx === heroIndex;
+          const isAdjacent = idx === (heroIndex + 1) % heroDramas.length;
+          const shouldRenderBg = isCurrent || isAdjacent;
+
+          return (
+            <div
+              key={drama.id}
+              className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
+              style={{
+                backgroundImage: shouldRenderBg ? `url(${drama.cover_image_url})` : 'none',
+                opacity: isCurrent ? 1 : 0,
+              }}
+            />
+          );
+        })}
 
         {/* Maroon and Dark Gradient overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#070707]/95 via-[#070707]/70 to-[#3A0A24]/30" />

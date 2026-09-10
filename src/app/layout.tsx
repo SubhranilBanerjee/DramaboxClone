@@ -24,6 +24,12 @@ export default function RootLayout({
     <html lang="en" className="dark bg-[#070707] text-white">
       <head>
         <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://assets.mixkit.co" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://assets.mixkit.co" />
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
       </head>
       <body className="min-h-screen bg-[#070707] text-white flex flex-col antialiased selection:bg-[#FF007A] selection:text-white">
         <AuthProvider>
