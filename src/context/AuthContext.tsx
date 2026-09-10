@@ -17,6 +17,11 @@ export interface AuthUser {
   company_name?: string;
   industry?: string;
   ad_budget?: string;
+  contact_phone?: string;
+  website_url?: string;
+  bio?: string;
+  favorite_genres?: string[];
+  preferred_language?: string;
   created_at?: string;
 }
 
@@ -28,6 +33,11 @@ export interface SignUpExtra {
   company_name?: string;
   industry?: string;
   ad_budget?: string;
+  contact_phone?: string;
+  website_url?: string;
+  bio?: string;
+  favorite_genres?: string[];
+  preferred_language?: string;
 }
 
 interface AuthContextType {
@@ -75,6 +85,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             company_name: session.user.user_metadata?.company_name,
             industry: session.user.user_metadata?.industry,
             ad_budget: session.user.user_metadata?.ad_budget,
+            contact_phone: session.user.user_metadata?.contact_phone,
+            website_url: session.user.user_metadata?.website_url,
+            bio: session.user.user_metadata?.bio,
+            favorite_genres: session.user.user_metadata?.favorite_genres,
+            preferred_language: session.user.user_metadata?.preferred_language,
             is_verified: session.user.user_metadata?.is_verified ?? (session.user.user_metadata?.role === 'creator' || session.user.user_metadata?.role === 'admin'),
             created_at: session.user.created_at,
           };
@@ -118,6 +133,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             company_name: session.user.user_metadata?.company_name,
             industry: session.user.user_metadata?.industry,
             ad_budget: session.user.user_metadata?.ad_budget,
+            contact_phone: session.user.user_metadata?.contact_phone,
+            website_url: session.user.user_metadata?.website_url,
+            bio: session.user.user_metadata?.bio,
+            favorite_genres: session.user.user_metadata?.favorite_genres,
+            preferred_language: session.user.user_metadata?.preferred_language,
             is_verified: session.user.user_metadata?.is_verified ?? (session.user.user_metadata?.role === 'creator' || session.user.user_metadata?.role === 'admin'),
             created_at: session.user.created_at,
           };
@@ -163,6 +183,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             company_name: extra?.company_name,
             industry: extra?.industry,
             ad_budget: extra?.ad_budget,
+            contact_phone: extra?.contact_phone,
+            website_url: extra?.website_url,
+            bio: extra?.bio,
+            favorite_genres: extra?.favorite_genres,
+            preferred_language: extra?.preferred_language,
             is_verified: isCreator || isAdmin,
           },
         },
@@ -181,6 +206,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           company_name: extra?.company_name,
           industry: extra?.industry,
           ad_budget: extra?.ad_budget,
+          contact_phone: extra?.contact_phone,
+          website_url: extra?.website_url,
+          bio: extra?.bio,
+          favorite_genres: extra?.favorite_genres,
+          preferred_language: extra?.preferred_language,
           is_verified: isCreator || isAdmin,
           created_at: new Date().toISOString(),
         };
@@ -216,6 +246,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         company_name: extra?.company_name || (isAdvertiser ? username : undefined),
         industry: extra?.industry || (isAdvertiser ? 'Entertainment & Media' : undefined),
         ad_budget: extra?.ad_budget || (isAdvertiser ? '$2,500/mo' : undefined),
+        contact_phone: extra?.contact_phone,
+        website_url: extra?.website_url,
+        bio: extra?.bio,
+        favorite_genres: extra?.favorite_genres || (role === 'viewer' ? ['Romance & CEO', 'Billionaire Revenge'] : undefined),
+        preferred_language: extra?.preferred_language || 'English',
         is_verified: isCreator || isAdmin,
         created_at: new Date().toISOString(),
       };
@@ -315,6 +350,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           company_name: found.company_name,
           industry: found.industry,
           ad_budget: found.ad_budget,
+          contact_phone: found.contact_phone,
+          website_url: found.website_url,
+          bio: found.bio,
+          favorite_genres: found.favorite_genres,
+          preferred_language: found.preferred_language,
           is_verified: found.is_verified ?? (found.role === 'creator' || found.role === 'admin'),
           created_at: found.created_at,
         };

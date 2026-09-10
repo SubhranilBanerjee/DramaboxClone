@@ -258,13 +258,30 @@ export default function HomePage() {
               </button>
             )}
 
-            <Link
-              href={dashboardLink}
-              className="w-8 h-8 rounded-full bg-[#FF007A] hover:bg-[#E6006E] flex items-center justify-center text-xs font-bold text-white shadow-[0_2px_10px_rgba(255,0,122,0.4)] transition-all"
-              title={user ? `${user.username} (${user.role})` : 'Dashboard'}
-            >
-              {user ? user.username.charAt(0).toUpperCase() : 'U'}
-            </Link>
+            {user ? (
+              <Link
+                href={dashboardLink}
+                className="w-8 h-8 rounded-full bg-[#FF007A] hover:bg-[#E6006E] flex items-center justify-center text-xs font-bold text-white shadow-[0_2px_10px_rgba(255,0,122,0.4)] transition-all"
+                title={`${user.username} (${user.role})`}
+              >
+                {user.username.charAt(0).toUpperCase()}
+              </Link>
+            ) : (
+              <div className="flex items-center gap-1.5">
+                <Link
+                  href="/auth/login"
+                  className="text-xs font-bold px-2.5 sm:px-3 py-1 rounded-full bg-[#151515]/80 border border-[#292929] hover:border-white text-white transition-all"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className="text-xs font-bold px-2.5 sm:px-3 py-1 rounded-full bg-[#FF007A] hover:bg-[#E6006E] text-white shadow-[0_2px_10px_rgba(255,0,122,0.4)] transition-all"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
           </div>
         </nav>
 

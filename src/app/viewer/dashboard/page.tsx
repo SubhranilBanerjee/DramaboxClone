@@ -79,9 +79,14 @@ export default function ViewerDashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 bg-[#FF007A]/15 border border-[#FF007A]/30 px-2.5 py-0.5 rounded-full text-[11px] font-bold text-[#FF007A]">
-                <Compass className="w-3 h-3 text-[#FF007A]" />
-                YARROWPLAY VIEWER HUB
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="inline-flex items-center gap-1.5 bg-[#FF007A]/15 border border-[#FF007A]/30 px-2.5 py-0.5 rounded-full text-[11px] font-bold text-[#FF007A]">
+                  <Compass className="w-3 h-3 text-[#FF007A]" />
+                  YARROWPLAY VIEWER HUB
+                </span>
+                <span className="inline-flex items-center gap-1 bg-amber-500/10 border border-amber-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-bold text-amber-300">
+                  <Star className="w-2.5 h-2.5 fill-amber-300" /> VIP MEMBER
+                </span>
               </div>
               <h1 className="text-xl sm:text-3xl font-black tracking-tight text-white uppercase flex items-center gap-2">
                 <span>Welcome back,</span>
@@ -90,6 +95,20 @@ export default function ViewerDashboardPage() {
               <p className="text-xs text-[#8F8F98] max-w-lg">
                 Your personalized vertical reels, continue-watching queue, and curated recommendations.
               </p>
+
+              {user?.favorite_genres && user.favorite_genres.length > 0 && (
+                <div className="pt-1 flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[10px] font-bold text-[#8F8F98] uppercase">Saved Interests:</span>
+                  {user.favorite_genres.map((g) => (
+                    <span
+                      key={g}
+                      className="px-2 py-0.5 rounded-full bg-[#191919] border border-[#2d2d2d] text-[10px] text-pink-300 font-medium"
+                    >
+                      {g}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Coin Widget & Surprise Me Button */}
@@ -117,6 +136,30 @@ export default function ViewerDashboardPage() {
                 <Shuffle className="w-3.5 h-3.5 text-[#FF007A]" /> Surprise Me
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Cross-Dashboard Access Bar */}
+      <div className="bg-[#0e0e0e] border-b border-[#202020] py-2 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex items-center justify-between text-xs flex-wrap gap-2">
+          <div className="flex items-center gap-2 text-[#8F8F98]">
+            <span className="text-[11px] font-semibold">Active Mode: <strong className="text-white">VIP Viewer</strong></span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-[#666]">Switch Portal:</span>
+            <Link
+              href="/creator/dashboard"
+              className="px-2.5 py-1 rounded-lg bg-[#161616] hover:bg-[#20152b] border border-[#292929] hover:border-purple-500/40 text-[11px] font-semibold text-purple-300 transition-all flex items-center gap-1.5"
+            >
+              Creator Studio
+            </Link>
+            <Link
+              href="/advertiser/dashboard"
+              className="px-2.5 py-1 rounded-lg bg-[#161616] hover:bg-[#251e12] border border-[#292929] hover:border-amber-500/40 text-[11px] font-semibold text-amber-300 transition-all flex items-center gap-1.5"
+            >
+              Advertiser Hub
+            </Link>
           </div>
         </div>
       </div>

@@ -187,6 +187,35 @@ export default function AdvertiserDashboardPage() {
             </div>
           </div>
         </div>
+
+        {/* Cross-Dashboard Access Bar */}
+        <div className="bg-[#090814] border-t border-[#231b40] py-2 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto flex items-center justify-between text-xs flex-wrap gap-2">
+            <div className="flex items-center gap-2 text-slate-400">
+              <span className="text-[11px] font-semibold">Active Mode: <strong className="text-amber-400">Brand Advertiser</strong></span>
+              {user?.industry && (
+                <span className="text-[10px] text-slate-500 bg-[#141026] px-2 py-0.5 rounded border border-[#271f49]">
+                  {user.industry}
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-slate-500">Switch Portal:</span>
+              <Link
+                href="/viewer/dashboard"
+                className="px-2.5 py-1 rounded-lg bg-[#141026] hover:bg-[#20102b] border border-[#271f49] hover:border-pink-500/40 text-[11px] font-semibold text-pink-300 transition-all"
+              >
+                Viewer Hub
+              </Link>
+              <Link
+                href="/creator/dashboard"
+                className="px-2.5 py-1 rounded-lg bg-[#141026] hover:bg-[#20152b] border border-[#271f49] hover:border-purple-500/40 text-[11px] font-semibold text-purple-300 transition-all"
+              >
+                Creator Studio
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Main Campaign Management */}

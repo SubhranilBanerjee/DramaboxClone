@@ -26,19 +26,48 @@ export default function LoginPage() {
     const res = await signIn(email, password);
     if (res.success) {
       showToast('Successfully signed in!', 'success');
-      router.push('/');
+      const lower = email.toLowerCase().trim();
+      if (lower.includes('admin')) {
+        router.push('/admin');
+      } else if (lower.includes('creator') || lower.includes('studio')) {
+        router.push('/creator/dashboard');
+      } else if (lower.includes('advertiser') || lower.includes('vendor') || lower.includes('partner') || lower.includes('brand')) {
+        router.push('/advertiser/dashboard');
+      } else {
+        router.push('/viewer/dashboard');
+      }
     } else {
       setError(res.error || 'Invalid email or password.');
     }
     setIsLoading(false);
   };
 
-  const handleQuickDemo = async () => {
+  const handleQuickDemoViewer = async () => {
     setIsLoading(true);
     const res = await signIn('demo.viewer@yarrowplay.stream', 'drama123456');
     if (res.success) {
       showToast('Signed in as Demo VIP Member!', 'success');
-      router.push('/');
+      router.push('/viewer/dashboard');
+    }
+    setIsLoading(false);
+  };
+
+  const handleQuickDemoCreator = async () => {
+    setIsLoading(true);
+    const res = await signIn('creator.studio@yarrowplay.stream', 'studio123456');
+    if (res.success) {
+      showToast('Signed in as Demo Creator Studio!', 'success');
+      router.push('/creator/dashboard');
+    }
+    setIsLoading(false);
+  };
+
+  const handleQuickDemoAdvertiser = async () => {
+    setIsLoading(true);
+    const res = await signIn('partner@apexbrands.com', 'partner123456');
+    if (res.success) {
+      showToast('Signed in as Demo Brand Advertiser!', 'success');
+      router.push('/advertiser/dashboard');
     }
     setIsLoading(false);
   };
@@ -132,21 +161,40 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-4 pt-4 border-t border-[#222222] flex items-center justify-between text-xs text-[#8F8F98]">
-          <button
-            type="button"
-            onClick={handleQuickDemo}
-            className="font-semibold text-white hover:text-[#FF007A] flex items-center gap-1.5 transition-colors"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-[#FF007A]" />
-            1-Click Demo Login
-          </button>
-          <Link
-            href="/auth/register"
-            className="font-bold text-[#FF007A] hover:underline"
-          >
-            Create account →
-          </Link>
+        <div className="mt-4 pt-4 border-t border-[#222222] space-y-3 text-xs text-[#8F8F98]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] text-[#666]">Demo Accounts:</span>
+            <Link
+              href="/auth/register"
+              className="font-bold text-[#FF007A] hover:underline"
+            >
+              Create account →
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-3 gap-1.5 pt-1">
+            <button
+              type="button"
+              onClick={handleQuickDemoViewer}
+              className="px-2 py-1.5 rounded-lg bg-[#1a1a1a] hover:bg-[#222] border border-[#2d2d2d] text-[10px] font-bold text-white hover:text-[#FF007A] transition-all text-center"
+            >
+              VIP Viewer
+            </button>
+            <button
+              type="button"
+              onClick={handleQuickDemoCreator}
+              className="px-2 py-1.5 rounded-lg bg-[#1a1a1a] hover:bg-[#222] border border-[#2d2d2d] text-[10px] font-bold text-purple-300 hover:text-purple-200 transition-all text-center"
+            >
+              Creator Studio
+            </button>
+            <button
+              type="button"
+              onClick={handleQuickDemoAdvertiser}
+              className="px-2 py-1.5 rounded-lg bg-[#1a1a1a] hover:bg-[#222] border border-[#2d2d2d] text-[10px] font-bold text-amber-300 hover:text-amber-200 transition-all text-center"
+            >
+              Advertiser
+            </button>
+          </div>
         </div>
       </div>
     </div>

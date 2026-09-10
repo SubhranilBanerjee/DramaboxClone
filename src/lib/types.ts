@@ -13,6 +13,10 @@ export interface Profile {
   industry?: string;
   ad_budget?: string;
   contact_phone?: string;
+  website_url?: string;
+  bio?: string;
+  favorite_genres?: string[];
+  preferred_language?: string;
   created_at?: string;
 }
 

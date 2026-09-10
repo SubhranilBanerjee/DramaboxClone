@@ -188,13 +188,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </p>
         </div>
 
-        {/* In Register mode: Role pill selector matching screenshot */}
+        {/* In Register mode: 3-Way Role Selector matching screenshot & user spec */}
         {mode === 'register' && (
-          <div className="grid grid-cols-2 gap-1.5 p-1 bg-[#0d0d0d] border border-[#292929] rounded-xl mb-4">
+          <div className="grid grid-cols-3 gap-1.5 p-1 bg-[#0d0d0d] border border-[#292929] rounded-xl mb-4">
             <button
               type="button"
               onClick={() => setRole('viewer')}
-              className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`py-2 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 ${
                 role === 'viewer'
                   ? 'bg-[#FF007A] text-white shadow-[0_2px_12px_rgba(255,0,122,0.4)]'
                   : 'text-[#8F8F98] hover:text-white bg-transparent'
@@ -206,14 +206,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <button
               type="button"
               onClick={() => setRole('creator')}
-              className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`py-2 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 ${
                 role === 'creator'
-                  ? 'bg-[#FF007A] text-white shadow-[0_2px_12px_rgba(255,0,122,0.4)]'
+                  ? 'bg-purple-600 text-white shadow-[0_2px_12px_rgba(168,85,247,0.4)]'
                   : 'text-[#8F8F98] hover:text-white bg-transparent'
               }`}
             >
               <Video className="w-3.5 h-3.5" />
-              <span>Content Creator</span>
+              <span>Creator</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole('advertiser')}
+              className={`py-2 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 ${
+                role === 'advertiser'
+                  ? 'bg-amber-500 text-black shadow-[0_2px_12px_rgba(245,158,11,0.4)]'
+                  : 'text-[#8F8F98] hover:text-white bg-transparent'
+              }`}
+            >
+              <Megaphone className="w-3.5 h-3.5" />
+              <span>Advertiser</span>
             </button>
           </div>
         )}
@@ -260,15 +272,71 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   placeholder="e.g. Neon Rebel Studios"
                   value={studioName}
                   onChange={(e) => setStudioName(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2.5 text-xs bg-[#191919] border border-[#292929] rounded-xl text-white placeholder-[#5A5A65] focus:outline-none focus:border-[#FF007A] focus:ring-1 focus:ring-[#FF007A] transition-all"
+                  className="w-full pl-10 pr-3 py-2.5 text-xs bg-[#191919] border border-[#292929] rounded-xl text-white placeholder-[#5A5A65] focus:outline-none focus:border-purple-500 transition-all"
                 />
+              </div>
+            </div>
+          )}
+
+          {mode === 'register' && isAdvertiser && (
+            <div className="space-y-3">
+              <div>
+                <label className="block text-[11px] font-bold text-[#8F8F98] uppercase tracking-wider mb-1.5">
+                  COMPANY / BRAND NAME
+                </label>
+                <div className="relative flex items-center">
+                  <Building2 className="w-4 h-4 text-[#8F8F98] absolute left-3.5 pointer-events-none" />
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Apex Global Brands"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    className="w-full pl-10 pr-3 py-2.5 text-xs bg-[#191919] border border-[#292929] rounded-xl text-white placeholder-[#5A5A65] focus:outline-none focus:border-amber-400 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-[11px] font-bold text-[#8F8F98] uppercase tracking-wider mb-1">
+                    SECTOR
+                  </label>
+                  <select
+                    value={industry}
+                    onChange={(e) => setIndustry(e.target.value)}
+                    className="w-full px-2.5 py-2 text-xs bg-[#191919] border border-[#292929] rounded-xl text-white focus:outline-none focus:border-amber-400"
+                  >
+                    <option value="Tech & Mobile Apps">Tech & Apps</option>
+                    <option value="Fashion & Luxury">Fashion</option>
+                    <option value="Gaming & Esports">Gaming</option>
+                    <option value="FMCG & Retail">FMCG</option>
+                    <option value="Finance & Fintech">Finance</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-[#8F8F98] uppercase tracking-wider mb-1">
+                    MONTHLY BUDGET
+                  </label>
+                  <select
+                    value={adBudget}
+                    onChange={(e) => setAdBudget(e.target.value)}
+                    className="w-full px-2.5 py-2 text-xs bg-[#191919] border border-[#292929] rounded-xl text-white focus:outline-none focus:border-amber-400"
+                  >
+                    <option value="$1,000/mo">$1,000/mo</option>
+                    <option value="$2,500/mo">$2,500/mo</option>
+                    <option value="$5,000/mo">$5,000/mo</option>
+                    <option value="$15,000+/mo">$15,000+/mo</option>
+                  </select>
+                </div>
               </div>
             </div>
           )}
 
           <div>
             <label className="block text-[11px] font-bold text-[#8F8F98] uppercase tracking-wider mb-1.5">
-              EMAIL ADDRESS
+              {isAdvertiser && mode === 'register' ? 'WORK EMAIL ADDRESS' : 'EMAIL ADDRESS'}
             </label>
             <div className="relative flex items-center">
               <Mail className="w-4 h-4 text-[#8F8F98] absolute left-3.5 pointer-events-none" />
@@ -311,7 +379,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full mt-2 py-3 rounded-full text-xs font-bold bg-[#FF007A] hover:bg-[#E6006E] text-white shadow-[0_4px_20px_rgba(255,0,122,0.35)] hover:shadow-[0_4px_25px_rgba(255,0,122,0.5)] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            className={`w-full mt-2 py-3 rounded-full text-xs font-bold text-white shadow-[0_4px_20px_rgba(255,0,122,0.35)] transition-all flex items-center justify-center gap-2 disabled:opacity-50 ${
+              mode === 'register' && isAdvertiser
+                ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black font-black hover:brightness-110 shadow-[0_4px_20px_rgba(245,158,11,0.4)]'
+                : mode === 'register' && isCreator
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 shadow-[0_4px_20px_rgba(168,85,247,0.4)]'
+                : 'bg-[#FF007A] hover:bg-[#E6006E]'
+            }`}
           >
             {isLoading
               ? 'Please wait...'
@@ -319,19 +393,56 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               ? 'Sign In to YarrowPlay'
               : isCreator
               ? 'Register as Content Creator'
+              : isAdvertiser
+              ? 'Register as Brand Advertiser'
               : 'Register as Viewer'}
           </button>
         </form>
 
         {/* Quick Demo Login in Sign-In mode */}
         {mode === 'login' && (
-          <div className="mt-3 text-center">
+          <div className="mt-3 pt-3 border-t border-[#222] flex items-center justify-center gap-2 flex-wrap text-[11px]">
+            <span className="text-[#666]">Demo login:</span>
             <button
               type="button"
               onClick={handleQuickDemoViewer}
-              className="text-[11px] font-semibold text-[#8F8F98] hover:text-[#FF007A] transition-colors inline-flex items-center gap-1"
+              className="font-bold text-[#FF007A] hover:underline"
             >
-              <Sparkles className="w-3 h-3 text-[#FF007A]" /> 1-Click Demo VIP Login
+              VIP Viewer
+            </button>
+            <span className="text-[#444]">•</span>
+            <button
+              type="button"
+              onClick={async () => {
+                setIsLoading(true);
+                const res = await signIn('creator.studio@yarrowplay.stream', 'studio123456');
+                if (res.success) {
+                  showToast('Signed in as Demo Creator Studio!', 'success');
+                  onClose();
+                  router.push('/creator/dashboard');
+                }
+                setIsLoading(false);
+              }}
+              className="font-bold text-purple-400 hover:underline"
+            >
+              Creator Studio
+            </button>
+            <span className="text-[#444]">•</span>
+            <button
+              type="button"
+              onClick={async () => {
+                setIsLoading(true);
+                const res = await signIn('partner@apexbrands.com', 'partner123456');
+                if (res.success) {
+                  showToast('Signed in as Demo Advertiser!', 'success');
+                  onClose();
+                  router.push('/advertiser/dashboard');
+                }
+                setIsLoading(false);
+              }}
+              className="font-bold text-amber-400 hover:underline"
+            >
+              Advertiser Hub
             </button>
           </div>
         )}
